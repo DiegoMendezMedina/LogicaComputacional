@@ -14,12 +14,18 @@ data Binario = U | Cero Binario | Uno Binario
 
 -- |1| Definicion de la clase Show para el tipo de dato Binario
 instance Show Binario where
-    show _ = error "Implementar"
-
+  show U = "1"
+  show (Uno bin) = show bin ++ "1"
+  show (Cero bin) =  show bin ++ "0"
+  
 -- |2| sucesor. Regresa el sucesor de un Binario
 -- -> Ejemplo sucesor de U (uno)  = Cero U , sucesor de 1 es 10
 sucesor  :: Binario -> Binario
-sucesor = error "Implementar"
+sucesor U = Cero U
+sucesor (Cero U) = Uno U
+sucesor (Uno U) = Cero(Cero U)
+sucesor (Cero bin) = Uno bin
+sucesor (Uno bin) = Cero (sucesor bin)
 
 -- |3| suma. Regresa la suma de 2 numeros de un Binarios
 -- -> ejemplo suma de U U = Cero U , suma de 1 y 1 es 10
@@ -46,7 +52,7 @@ sumaBinLista = error "Implementar"
 
 -- |1| natABin: Recibe un natural (mayor que 1) y devuelve un binario
 natABin :: Int -> Binario
-natABin = error "Implementar"
+natABin = error "Solo numeros mayores que cero"
 
 -- |2| binANat: Recibe un binario y devuelve su reprentacion en numero natural (mayor que 1).
 binANat :: Binario -> Int
@@ -55,3 +61,11 @@ binANat = error "Implementar"
 -- |3| predecesor: Recibe un binario y devuelve su binario anterior
 predecesor :: Binario -> Binario
 predecesor = error "Implementar"
+
+
+-- | Variables pa probar:
+ocho = Cero (Cero(Cero U))
+dos = Cero U
+once = Uno (Uno (Cero U))
+nueve = sucesor ocho
+doce = sucesor once
