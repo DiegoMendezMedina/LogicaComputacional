@@ -1,0 +1,9 @@
+* Logica Computacional
+** Grupo 7057 Semestre 2022-1
+*** /profesor/ Dr. Favio Ezequiel Miranda Perea
+*** /ayudante/ Javier Enríquez Mendoza    
+*** /ayudante/ Daniel Lugo Cano
+*** /ayudante lab./ Daniel Lugo Cano
+*** /ayudante lab./ Ramón Arenas Ayala    
+** [[https://sites.google.com/ciencias.unam.mx/logica2022-1/inicio][Sitio del curso]]
+    
