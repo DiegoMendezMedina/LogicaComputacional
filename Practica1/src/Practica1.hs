@@ -54,6 +54,7 @@ aux_suma x bin = sucesor(aux_suma (x-1) bin)
 -- | peano_sum: Recibe dos Binarios y los suma siguiendo la suma definida
 --              por Peano y utilizada en la llamada aritmética de Peano.
 --             Funcion extra solo para ver si tambien queda.
+--             Termino siendo auxiliar de producto.
 suma_peano :: Binario -> Binario -> Binario
 suma_peano x U = sucesor x
 suma_peano x y = sucesor (suma_peano x (predecesor y))
@@ -68,13 +69,35 @@ producto x y   = suma_peano (producto (x) (predecesor y)) x
 -- |5| natBinLista. Regresa el la representacion en Binario de un numero Decimal en forma de Lista
 -- -> ejemplo natBinLista 8 = [1,0,0,0]
 natBinLista :: Int -> [Int]
-natBinLista = error "Implementar"
-                
+natBinLista 1 = [1]
+natBinLista 0 = [0]
+natBinLista x
+  | mod x 2 == 0   =  (natBinLista (div x 2)) ++ [0]
+  | otherwise      =  (natBinLista (div x 2)) ++ [1]
 
 -- |6| sumaBinLista. Regresa la suma de 2 listas que representan 2 numeros binarios.
 -- -> ejemplo sumaBinLista de [1] [1,0] = (Uno U)
 sumaBinLista :: [Int] -> [Int] -> Binario
-sumaBinLista = error "Implementar"
+sumaBinLista x y = suma_peano (natListaABin(reversa x))
+                                (natListaABin(reversa y))
+
+-- | natListaABin: Recibe una lista de unos y ceros y regresa su representación
+--                 en Binario. Lista volteada, como el constructor de Binario.
+--                Funcion auxiliar para sumaBinLista.
+--  -> ejemplo natListaABin [0, 0, 0, 1] = Cero(Cero(Cero U))
+natListaABin :: [Int] -> Binario
+natListaABin [0] = error "El contructor es U"
+natListaABin [1] = U
+natListaABin (x:xs)
+  | x == 0 = Cero (natListaABin xs)
+  | x == 1 = Uno  (natListaABin xs)
+  | otherwise = error "Solo recibe unos y ceros"
+
+-- | reversa: Recibe una lista y regresa está volteada.
+--          Función auxiliar para natListaABin.
+reversa :: [Int] -> [Int]
+reversa [] = []
+reversa (x:xs) = (reversa xs) ++ [x]
 
 {-- PUNTOS EXTRA --}
 
@@ -113,10 +136,10 @@ potencia_dos x = 2 * potencia_dos (x-1)
 -- |3| predecesor: Recibe un binario y devuelve su binario anterior
 predecesor :: Binario -> Binario
 predecesor U   = U
-predecesor bin = natABin((binANat bin) -1)
+predecesor bin = natABin((binANat bin)-1)
 
 
--- | Variables pa probar:
+--{ Variables pa probar -}
 dos = Cero U
 dos' = sucesor(U)
 nueve = Uno(Cero(Cero U))
@@ -127,6 +150,11 @@ once' = sucesor(sucesor nueve')
 
 ocho = Cero(Cero(Cero U))
 tres = sucesor(sucesor(U))
+ocho_lista = [1, 0, 0, 0]
+dieciseis_lista = [1, 0, 0, 0 , 0]
+dieciseis' = (producto (natListaABin (reversa ocho_lista)) dos)
+dieciseis'' = sumaBinLista ocho_lista ocho_lista
+dieciseis = Cero(Cero(Cero(Cero U)))
 
 {- Pruebas -}
 prueba_sucesor = dos == dos' && once == once'    -- sucesor funciona 
@@ -139,5 +167,6 @@ prueba_suma = (suma dos dos) == (Cero(Cero U))
 prueba_suma_peano =                              -- suma_peano funciona
   (suma_peano (suma_peano dos  U) (sucesor tres))
   == (predecesor ocho)
-pruebas = prueba_sucesor && prueba_predecesor && prueba_binANat &&
-          prueba_natABin 
+prueba_sumaBinLista = dieciseis == dieciseis' && -- sumaBinLista funciona
+                      dieciseis == dieciseis''  
+
