@@ -60,8 +60,10 @@ suma_peano x y = sucesor (suma_peano x (predecesor y))
 
 -- |4| producto. Regresa el producto de 2 numeros Binarios
 -- -> Ejemplo producto de (Cero U) (Cero U) = (Cero (Cero U)) , producto de 10 con 10 es 100
+-- Producto de aritmetica de peano de una.
 producto :: Binario -> Binario -> Binario
-producto = error "Implementar"
+producto bin U = bin
+producto x y   = suma_peano (producto (x) (predecesor y)) x
 
 -- |5| natBinLista. Regresa el la representacion en Binario de un numero Decimal en forma de Lista
 -- -> ejemplo natBinLista 8 = [1,0,0,0]
@@ -117,19 +119,25 @@ predecesor bin = natABin((binANat bin) -1)
 -- | Variables pa probar:
 dos = Cero U
 dos' = sucesor(U)
-cuatro = sucesor(sucesor dos)
-ocho = Cero (Cero(Cero U))
-nueve = Uno (Cero(Cero U))
-once = Uno (Uno (Cero U))
+nueve = Uno(Cero(Cero U))
 nueve' = sucesor(sucesor(sucesor(sucesor(sucesor(sucesor(sucesor(sucesor(
                                                                     U))))))))
+once = Uno(Uno (Cero U))
 once' = sucesor(sucesor nueve')
 
+ocho = Cero(Cero(Cero U))
+tres = sucesor(sucesor(U))
 
 {- Pruebas -}
 prueba_sucesor = dos == dos' && once == once'    -- sucesor funciona 
 prueba_predecesor = U == predecesor(dos)         -- predecesor funciona
                     && predecesor(nueve) == ocho  
-prueba_natAbin = binANat(once) == binANat(once') -- natABin funciona 
-
-pruebas = prueba_sucesor && prueba_predecesor && prueba_natAbin
+prueba_binANat = binANat(once) == binANat(once') -- natABin funciona 
+prueba_natABin = tres == (natABin 3) &&
+                 ocho == (natABin 8)               -- natABin funciona
+prueba_suma = (suma dos dos) == (Cero(Cero U))
+prueba_suma_peano =                              -- suma_peano funciona
+  (suma_peano (suma_peano dos  U) (sucesor tres))
+  == (predecesor ocho)
+pruebas = prueba_sucesor && prueba_predecesor && prueba_binANat &&
+          prueba_natABin 

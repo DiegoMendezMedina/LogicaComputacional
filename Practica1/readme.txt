@@ -7,14 +7,20 @@ Desarrollo de la práctica:
     recursión.
      Creamos un repositorio en github para llevar un buen manejo de version,
     uno aprueba las pull request del otro.
+     De nuestro curso de teoria de conjuntos I, recordamos los axiomas de
+    peano y fue más facil implementar la suma y el producto.
 
      Nos reunimos el ___ a las __ ...
-     
+     	 
      Estuvo interesante, decidimos implementar varias cosas extras:
    
       * Suma en la aritmetica de peano, fue extra por que la primera
        solución que se nos ocurrio para la suma tenia que ver con
-        potencias de dos y no quisimos quitarla.
+       potencias de dos y no quisimos quitarla. Recordamos los
+       axiomas de peano y la aritmetica de peano de nuestras clases
+       de teoria de conjuntos I, ya que teniamos la suma de peano
+       decidimos implementar la multiplicación de peano descrita
+       en sus axiomas cinco y seis.
 	
       * Eq, para checar que nuestras sumas y sucesor estuvieran bien.
       
