@@ -15,22 +15,48 @@ data Binario = U | Cero Binario | Uno Binario
 -- |1| Definicion de la clase Show para el tipo de dato Binario
 instance Show Binario where
   show U = "1"
-  show (Uno bin) = show bin ++ "1"
-  show (Cero bin) =  show bin ++ "0"
+  show (Uno bin)  = show bin ++ "1"
+  show (Cero bin) = show bin ++ "0"
   
+-- | Implementacion de Eq solo para ver si nuestras funciones estan bien
+instance Eq Binario where
+  (==) bin bim = aux_eq bin bim
+
+-- | aux_eq: Funcion auxiliar para determinar si los dos Binarios recibidos
+--           son iguales o no.
+aux_eq :: Binario -> Binario -> Bool
+aux_eq U U = True
+aux_eq (Cero bin) (Cero bim) = aux_eq bin bim
+aux_eq (Uno bin)  (Uno bim)  = aux_eq bin bim
+aux_eq _ _ = False
+
 -- |2| sucesor. Regresa el sucesor de un Binario
 -- -> Ejemplo sucesor de U (uno)  = Cero U , sucesor de 1 es 10
 sucesor  :: Binario -> Binario
 sucesor U = Cero U
-sucesor (Cero U) = Uno U
-sucesor (Uno U) = Cero(Cero U)
 sucesor (Cero bin) = Uno bin
 sucesor (Uno bin) = Cero (sucesor bin)
 
 -- |3| suma. Regresa la suma de 2 numeros de un Binarios
 -- -> ejemplo suma de U U = Cero U , suma de 1 y 1 es 10
 suma :: Binario -> Binario -> Binario
-suma = error "Implementar"
+suma U U = sucesor U
+suma x bin = aux_suma (binANat x) bin
+
+-- | aux_suma: Recibe un Natural y un Binario, regresa la suma
+--             haciendo n sucesores al Binario recibido.
+--             donde n es el primer número recibido
+--           Funcion auxiliar para suma.
+aux_suma :: Int -> Binario -> Binario
+aux_suma 1 bin = sucesor bin
+aux_suma x bin = sucesor(aux_suma (x-1) bin)
+
+
+-- | peano_sum: Recibe dos Binarios y los suma siguiendo la suma definida
+--              por peano y utilizada en la llamada aritmética de Peano.
+--             Funcion extra solo para ver si tambien queda.
+pa_sum :: Binario -> Binario -> Binario
+pa_sum U U = Cero U
 
 -- |4| producto. Regresa el producto de 2 numeros Binarios
 -- -> Ejemplo producto de (Cero U) (Cero U) = (Cero (Cero U)) , producto de 10 con 10 es 100
@@ -56,7 +82,23 @@ natABin = error "Solo numeros mayores que cero"
 
 -- |2| binANat: Recibe un binario y devuelve su reprentacion en numero natural (mayor que 1).
 binANat :: Binario -> Int
-binANat = error "Implementar"
+binANat bin = auxbinANat 0 bin
+
+-- | auxbinANat: Recibe un Natural y un Binario, calcula su valor
+--               sabiendo que un número binario es la representación
+--               de la suma de potencias de dos.
+--              Funcion auxiliar para natABin.
+--              Solo utilizar como funcion auxiliar.
+auxbinANat :: Int -> Binario -> Int
+auxbinANat x U =  potencia_dos x
+auxbinANat x (Uno bin) =  (potencia_dos x) + auxbinANat (x+1) bin
+auxbinANat x (Cero bin) = auxbinANat (x+1) bin
+
+-- | potencia_dos: Recibe el numero de la potencia de dos que se desea calcular,
+--                 devuelve esta. Funcion auxiliar para auxbinANat.
+potencia_dos :: Int -> Int
+potencia_dos 0 = 1
+potencia_dos x = 2 * potencia_dos (x-1)
 
 -- |3| predecesor: Recibe un binario y devuelve su binario anterior
 predecesor :: Binario -> Binario
@@ -64,8 +106,14 @@ predecesor = error "Implementar"
 
 
 -- | Variables pa probar:
-ocho = Cero (Cero(Cero U))
 dos = Cero U
-once = Uno (Uno (Cero U))
+cuatro = sucesor(sucesor dos)
+ocho = Cero (Cero(Cero U))
 nueve = sucesor ocho
-doce = sucesor once
+once = Uno (Uno (Cero U))
+nueve' = sucesor(sucesor(sucesor(sucesor(sucesor(sucesor(sucesor(sucesor(
+                                                                    U))))))))
+once' = sucesor(sucesor nueve')
+prueba_onces = once' == once     -- Regresa True 8) sucesor funciona !
+prueba_natAbin = binANat(once) == binANat(once') -- natABin funciona !
+
