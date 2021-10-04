@@ -1,0 +1,90 @@
+\documentclass[8pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{hyperref}
+\usepackage{svg}
+\usepackage{csquotes}
+\usepackage{multicol}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\title{%
+  Ejercicio Semanal 1 \\
+  {\large{Introducción}}}
+\author{Diego Méndez Medina}
+\date{}
+\begin{document}
+\ttfamily
+\maketitle
+\rmfamily
+\begin{enumerate}
+\item Lea el artículo \textbf{On the unusual effectiveness of logic in computer science} que se encuentra en la sección de material de clasroom y la página del curso y entregue un comentario personal al respecto, de mínimo una cuartilla, que incluya cuál de las aplicaciones de la lógica (secciones 2 a 6) le parece más atractiva y por qué.\\\\
+  \ttfamily
+  El texto sigue una temática planteada en dos artículos previos donde los autores, más allá de sólo mostrar ejemplos del cómo las mátematicas son eficientes en la descripción de las ciencias naturales, se cuestionan del por qué de ésta. Los autores no plantean siquiera la respuesta a esta pregunta. Mencionan que las matemáticas han sido parte fundamental del desarrollo de las ciencias de la computación pero la finalidad del artículo es mostrar mediante ejemplos cómo la lógica, una rama de la filosofía que durante el último siglo fue desarrollada principalmente por matemáticos, permite el desarollo y beneficio de múltiples áreas de las ciencias de la computación, a diferencia de las ciencias naturales y las matemáticas.\\
+  \hspace*{1cm} Las cuatro áreas que mencionan son complejidad descriptiva, la lógica como lenguaje de queries en las bases de datos, razonamiento sobre el conocimiento y, por último, \\verificaciones automatizadas del diseño de semiconductores. Mencionaré la implementación que menos me interesó y la que más lo hizo, lo que entendí de cada uno de estas y su vinculo con la lógica.\\
+  \begin{itemize}
+  \item \textbf{Lógica como lenguaje de queries en las bases de datos.}\\\\
+    De acuerdo con el texto, la lógica de primer orden es aquella en lo que se basaron los sistemas modernos de bases de datos, así como su lenguaje estandardizado de queries. Por ejemplo, SQL y QBE que son variaciónes sintácticas de la lógica de primer orden. Los autores nos muestran cómo es que, evaluando una expresión lógica con ayuda del cuantificador existencial y lógica de primer orden, es posible seleccionar elementos de dos tablas que cumplen con ciertas características.\\
+    \hspace*{1cm} También nos mencionan que, dado que las funciones son recursivas, nos es posible escalar linealmente. Y así, con los suficientes recursos y utilizando procesamiento paralelo se puede mantener el tiempo de respuesta en la consulta constante a pesar del crecimiento de la base de datos. Lo anterior es posible únicamente de manera teórica pues en la práctica es imposible llegar a un paralelismo masivo.\\
+    \hspace*{1cm} A pesar de la relación clara de la lógica con las ciencias de la computación en la implementación actual de las bases de datos, no me interesa tanto. Si bien es cierto que la ciencia de datos y las bases de datos ayudan a la humanidad en ciertos campos como lo son la medicina, energía solar, sistemas de registro y muchos más, tambíen atentan contra la privacidad con el recolectamiento masivo de datos de la gente en internet. Por eso es que esta área no me interesa tanto.\\
+    \newpage
+  \item\textbf{Complejidad Descriptiva.}\\\\
+    Esta área fue la que menos entendí de las cuatro pero fue la que más me intersó. Los autores comienzan definiendo qué es la complejidad computacional, pues la complejidad descriptiva es una rama de ésta, cómo la cantidad de recursos, tiempo y memoria, es necesaria para resolver un problema en particular. Tambien nos definen los problemas P que son resueltos en tiempo polynomial y los NP que \textit{aparentemente} requieren más que tiempo polinomial. \\
+    \hspace*{1cm} La complejidad descriptiva, a diferencía de la teoría de la complejidad, pregunta qué tan díficil es expresar una propiedad $T$ en algún tipo de lógica. Ve las entradas como estructuras lógicas finitas, lo que permite modelar estructuras de datos recursivamente, como lo son las graficas, pilas, listas, y demás. En el texto muestran algunos ejemplos de cómo es posible expresar propiedades de las gráficas mediante lógica de primer y segundo orden.\\
+    \hspace*{1cm} Los autores continuan mostrando el teorema que define la clase de complejidad NP utilizando únicamente la lógica. Tambíen nos muestran que teniendo definiciones inductivas es posible incrementar las capacidades de la lógica de primer orden.\\
+    \hspace*{1cm} La tería de la computación es una rama que me parece muy interesante. A pesar de no entender todos los teoremas que mostraron en este apartado, me intersó mucho la capacidad de poder formular las bases de la complejidad únicamente con lógica. Sé que existen varios tipos de lógica, y aunque solo conozca dos, la lectura me motivó a leer más al respecto. Y en un futuro, quizá, investigar y generar conocimiento sobre la complejidad descriptiva.\\
+  \end{itemize}
+  En el paro leí el libro que recomiendan los autores, \textit{The Universal Computer}, si bien es meramente bibiliográfico, solo cubre a grandes rasgos la vida de los lógicos y describe vagamente sus avances, pero fue una buena introducción al tema y me motiva o conocer más de la vida de cada uno, su trabajo y el impacto de este.
+  
+    \hspace*{1cm}El texto termina reafirmando lo antes mencionado, que la eficiencia de la lógica en las ciencias de la computación no se limita a lo escrito en estas quince páginas, y por último sugieren que quizá como las ciencias de la computación, a diferencia de las ciencias naturales, son algo \textit{``sintético''}, algo creado por la especie humana, es que la lógica es apropiada y exitosa en el estudio y aplicación de las ciencias de la computación. 
+  \rmfamily
+  \newpage
+\item Formalice el siguiente argumento con lógica proposicional, una vez hecha la especificación formal decida si el argumento es correcto o no, indicando claramente el método utilizado. Defina previamente el glosario, es decir, el significado de las variables empleadas en la especificación formal.\\\\
+  \textsl{Si el programa no se ejecuta rapidamente, entonces es ineficiente. El programa tiene un error o no es ineficiente. Sin embargo, el programa no tiene un error. Por lo tanto, el programa se ejecuta rapidamente.}\\\\
+  %\textsl{Si el programa es eficiente, se ejecuta rápidamente. El programa es eficiente, o tiene un error. \newline Sin embargo, el programa no se ejecuta rápidamente. Por lo tanto tiene un error.}\\\\
+  \ttfamily
+  \textbf{Solución:}
+  \begin{itemize}
+  \item Glosario.\\\\
+    Definimos:
+    \begin{align*}
+      p &:= \text{El programa es eficiente} & q &:= \text{El programa se ejecuta rápidamente} \\
+      r &:= \text{El programa tiene un error}
+    \end{align*}
+    \begin{multicols}{2}
+    \item Especificación formal.\\
+      \begin{enumerate}
+      \item $\neg q \rightarrow \neg p$
+      \item $r \lor \neg(\neg p)$ 
+      \item $\lnot r$\\
+        \rule{.07\textwidth}{0.2mm}\\
+        $\therefore q$
+      \end{enumerate}
+    \item Reescritura de la especificación.\\\\
+      Sabemos que $a \rightarrow b \equiv \neg a \lor b $, entonces reescribimos {\small\bf a)} como $\neg(\neg q) \lor \neg p \equiv q\lor \neg p$.\\\\
+      Por último, reescribimos {\small \bf b)} como $r \lor p$
+    \end{multicols}
+  \item Premisas
+    \begin{enumerate}
+    \item $q\lor \neg p$
+    \item $r \lor  p$ 
+    \item $\lnot r$\\
+      \rule{.07\textwidth}{0.2mm}\\
+      $\therefore q$
+    \end{enumerate}
+    \item Argumentación.\\\\
+      Damos por verdaderas las premisas y veremos si es posible concluir que $q$ es verdadero.
+      \begin{align*}
+        \text{I.}& \text{ Por c) sabemos que } r = 0.\\
+        \text{II.}& \text{ Por I y b) sabemos que } p = 1.\\
+        \text{III.}& \text{ Por II y la veracidad de a), concluimos que } q = 1.
+      \end{align*}
+      El argumento es correcto pues suponiendo verdaderas las premisas llegamos a que la conclusión también lo es.
+    \end{itemize}
+  \end{enumerate}
+\end{document}
