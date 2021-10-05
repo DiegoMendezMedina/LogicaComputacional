@@ -19,7 +19,8 @@ instance Show Binario where
 -- |2| sucesor. Regresa el sucesor de un Binario
 -- -> Ejemplo sucesor de U (uno)  = Cero U , sucesor de 1 es 10
 sucesor  :: Binario -> Binario
-sucesor = error "Implementar"
+sucesor U = U
+
 
 -- |3| suma. Regresa la suma de 2 numeros de un Binarios
 -- -> ejemplo suma de U U = Cero U , suma de 1 y 1 es 10
