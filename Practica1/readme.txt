@@ -9,7 +9,7 @@ Desarrollo de la práctica:
      Creamos un repositorio en github para llevar un buen manejo de version,
     uno aprueba las pull request del otro.
 
-     Nos reunimos el ___ a las __ ...
+     Nos reunimos el lunes 04 apoximadamente de 6:30-8:00.
           	 
      Estuvo interesante, decidimos implementar varias cosas extras:
    

@@ -51,7 +51,7 @@ aux_suma :: Int -> Binario -> Binario
 aux_suma 1 bin = sucesor bin
 aux_suma x bin = sucesor(aux_suma (x-1) bin)
 
--- | peano_sum: Recibe dos Binarios y los suma siguiendo la suma definida
+-- | suma_peano: Recibe dos Binarios y los suma siguiendo la suma definida
 --              por Peano y utilizada en la llamada aritmética de Peano.
 --             Funcion extra solo para ver si tambien queda.
 --             Termino siendo auxiliar de producto.
@@ -143,11 +143,10 @@ predecesor bin = natABin((binANat bin)-1)
 dos = Cero U
 dos' = sucesor(U)
 nueve = Uno(Cero(Cero U))
-nueve' = sucesor(sucesor(sucesor(sucesor(sucesor(sucesor(sucesor(sucesor(
-                                                                    U))))))))
+nueve' = sucesor(sucesor(sucesor(sucesor(
+          sucesor(sucesor(sucesor(sucesor(U))))))))
 once = Uno(Uno (Cero U))
 once' = sucesor(sucesor nueve')
-
 ocho = Cero(Cero(Cero U))
 tres = sucesor(sucesor(U))
 ocho_lista = [1, 0, 0, 0]
