@@ -14,329 +14,164 @@
 \title{%
   Ejercicio Semanal 2\\
   {\large{}}}
-\author{López Miranda Angel Mauricio\and Diego Méndez Medina}
+\author{Diego Méndez Medina}
 \date{}
 \begin{document}
 \ttfamily
 \maketitle
 \rmfamily
+Considera la siguiente información:
+
+% INFO
+\begin{itemize}
+\item Si Manuel es delgado, entonces Paola no es pelirroja o Fernando no es alto.
+\item Si Fernando es alto, entonces Sandra es cariñosa.
+\item Si Sandra es cariñosa y Paola es pelirroja, entonces Manuel es delgado.
+\item Paola es pelirroja.
+\end{itemize}
+
 \begin{enumerate}
-\item Defina recursivamente las siguientes funciones:
+  % 01
+\item Traduce cada uno de los enunciados anteriores a lógica proposicional usando el siguiente glosario:
+  \begin{itemize}
+  \item $M$ para indicar que Manuel es delgado.
+  \item $P$ para indicar que Paola es pelirroja.
+  \item $F$ para indicar que Fernando es alto.
+  \item $S$ para indicar que Sandra es cariñosa.
+  \end{itemize}
 
-  \begin{enumerate}
-    
-    % inciso a primera pregunta (NI)
-  \item {\tt ni} que recibe una fórmula $\varphi$ y regresa el número
-    de símbolos de implicación que tiene la fórmula. Por ejemplo:
-
-    $${\tt ni} (p \land r \to \lnot (q \to r)) = 2$$
-    
-    \ttfamily
-    {\bf Solución:}
-    \hfill\break
-    % firma 
-    $${\tt ni} :: {\tt PROP} \rightarrow \mathbb{N}$$
-    \begin{align*} 
-      % atom
-      {\tt ni}(\varphi) &= 0 & &\text{si $\varphi$ es atomíca}\\
-      % neg
-      {\tt ni}(\neg\varphi) &= {\tt ni}(\varphi) \\
-      % impl
-      {\tt ni}(\varphi \rightarrow \psi) &= 1 + {\tt ni}(\varphi) +
-      {\tt ni}(\psi) \\
-      % resto de binarios
-      {\tt ni}(\varphi * \psi) &= {\tt ni}(\varphi) + {\tt ni}(\psi) &
-      &\text{donde $*$} \in\{\land, \lor, \leftrightarrow\}\\
-    \end{align*}
-
-    Ejemplo:
-    \begin{align*}
-      {\tt ni} (p \land r \to \lnot (q \to r)) &= 1 +
-      {\tt ni} (p \land r) +  {\tt ni}(\lnot (q \to r)) \\
-      &= 1 + {\tt ni}(p) +  {\tt ni}(r) +  {\tt ni}(q \to r) \\
-      &= 1 + 0 +  0 +  1+ {\tt ni}(q) + {\tt ni}(r) \\
-      &= 2 + 0 + 0 = 2
-    \end{align*}
-    \rmfamily
-    
-    % inciso b primera pregunta (ND)
-  \item {\tt nd} que recibe una fórmula $\varphi$ y regresa el número de
-    símbolos de disyunción que tiene la fórmula. Por ejemplo
-    
-    $${\tt nd} (p \lor r \to \lnot (q \lor r) \land (s\lor\neg t)) = 3$$
-    \ttfamily
-    {\bf Solución:}
-    \hfill\break
-    % firma 
-    $${\tt nt} :: {\tt PROP} \rightarrow \mathbb{N}$$
-    \begin{align*}
-      % atom
-      {\tt nd}(\varphi) &= 0 & &\text{si $\varphi$ es atomíca}\\
-      % neg
-      {\tt nd}(\neg\varphi) &= {\tt nd}(\varphi) \\
-      % or
-      {\tt nd}(\varphi \lor \psi) &= 1 + {\tt nd}(\varphi) +
-      {\tt nd}(\psi) \\
-      % resto de binarios
-      {\tt nd}(\varphi * \psi) &= {\tt nd}(\varphi) + {\tt nd}(\psi) &
-      &\text{donde $*$} \in\{\land, \rightarrow, \leftrightarrow\}\\
-    \end{align*}
-    \newpage
-    Ejemplo:
-    \begin{align*}
-      {\tt nd} (p \lor r \to \lnot (q \lor r) \land (s\lor\neg t)) &= {\tt nd} (p \lor r \to \lnot (q \lor r) \land (s\lor\neg t)) \\
-      &= {\tt nd}(p \lor r) + {\tt nd}(\lnot (q \lor r) \land (s\lor\neg t)) \\
-      &= 1 + {\tt nd}(p) + {\tt nd}( r) + {\tt nd}(\lnot (q \lor r)) +
-      {\tt nd}(s\lor\neg t)) \\
-      &= 1 + 0 + 0 + {\tt nd}(q \lor r) + 1 +{\tt nd}(s) + {\tt nd}(\neg t) \\
-      &= 2 + {\tt nd}(q \lor r) + {\tt nd}(s) + {\tt nd}(\neg t) \\
-      &= 2 + 1 + {\tt nd}(q) + {\tt nd}(r) + 0 + {\tt nd}(t) \\
-      &= 3 + 0 +0 +0 = 3
-    \end{align*}
-    
-    \rmfamily
-    
-    % inciso c primer pregunta (QI)
-  \item {\tt qi} que recibe una fórmula y regresa una fórmula en que no figura
-    el símbolo $\to$, usando la equivalencia lógica
-    $A\to B\equiv \neg A\lor B$. Por ejemplo:
-    
-    $${\tt qi} (p \land r \to \lnot (q \to r)) = \lnot (p \land r) \lor \lnot(\lnot q \lor r)$$
-        \ttfamily
-    {\bf Solución:}
-    \hfill\break
-    % firma 
-    $${\tt qi} :: {\tt PROP} \rightarrow {\tt PROP}$$
-    \begin{align*}
-      % atom
-      {\tt qi}(\varphi) &= \varphi & &\text{si $\varphi$ es atomíca}\\
-      % neg
-      {\tt qi}(\neg\varphi) &= \neg({\tt qi}(\varphi))\\
-      % impl
-      {\tt qi}(\varphi \rightarrow \psi) &= \neg({\tt qi}(\varphi))\lor {\tt qi}(\psi) \\
-      % resto de binarios
-      {\tt qi}(\varphi * \psi) &= {\tt qi}(\varphi) * {\tt qi}(\psi) &
-      &\text{donde $*$} \in\{\land, \lor, \leftrightarrow\}
-    \end{align*}
-    
-    Ejemplo:
-    \begin{align*}
-      {\tt qi} (p \land r \to \lnot (q \to r)) &= \neg({\tt qi}(p \land r))
-      \lor {\tt qi}(\lnot (q \to r)) \\
-      &= \neg({\tt qi}(p) \land {\tt qi}(r)) \lor \neg({\tt qi}(q \to r) \\
-      &= \neg(p \land r) \lor \neg(\neg({\tt qi}(q)) \lor {\tt qi}(r))\\
-      &= \neg(p \land r) \lor \neg((\neg q) \lor r)\\
-    \end{align*}
-  \end{enumerate}
-
+  \hfill\break
+  \ttfamily
+  %Respoesta
+  {\bf Solución:}
+      
+  Dado el glosario antes mencionado y la información tenemos:
+  \begin{itemize}
+  \item $M\rightarrow (\neg P \lor \neg F)$
+  \item $F\rightarrow S$
+  \item $(S\land P) \rightarrow M$
+  \item $P$
+  \end{itemize}
+  \rmfamily
+  % 02
+\item Encuentra la Forma Normal Negativa de las fórmula anteriores.
+  
+  \hfill\break
+  \ttfamily
+  % Respoesta 
+  {\bf Solución:}
+      
+  Siguiendo la \textit{proposición dos de la nota tres} y la solución a la
+  pregunta anterior:
+  
+  \begin{align*}
+    M\rightarrow (\neg P \lor \neg F) &\equiv \neg M  \lor
+    \neg P \lor \neg F & &\text{Eliminando implicación}\\
+    &= fnn(M\rightarrow (\neg P \lor \neg F))\\
+    & & &\\
+    F\rightarrow S &\equiv \neg F \lor S & &\text{Eliminando implicación}\\
+    &= fnn(F\rightarrow S)\\
+    & & &\\
+    (S\land P) \rightarrow M &\equiv \neg (S\land P) \lor M &
+    &\text{Eliminando implicación}\\
+    &\equiv \neg S \lor \neg P \lor M & &\text{De Morgan}\\
+    &= fnn((S\land P) \rightarrow M) \\
+    & & &\\
+    P &= fnn(P) & &\text{Lo cumple por definición}
+  \end{align*}
   \newpage
   \rmfamily
-  % segunda 
-\item Utilizando las definiciones anteriores demuestre mediante inducción
-  estructural que para cualquier fórmula $\varphi$, se cumple:
-  
-  $${\tt nd}({\tt qi}\,(\varphi)) = {\tt nd}(\varphi) + {\tt ni}(\varphi)$$
+  % 03
+\item Encuentra la Forma Normal Conjuntiva de cada fórmula.
 
+  \hfill\break
   \ttfamily
+  % Respoesta
   {\bf Solución:}
-  \hfill\break
-  % Caso base
-  Sea $a$ un elemento cualquiera de ATOM, dadas las definiciones
-  de ni, nd y qi, la variable entra en los casos basos de las tres funciones
-  y tenemos:
-  \begin{align*}
-    {\tt qi}(a) &= a & {\tt nd}(a) &= 0 \\
-    {\tt ni}(a) &= 0
-  \end{align*}
-  Así:
-  
-  $${\tt nd}({\tt qi}(a)) = {\tt nd}(a) = 0 = 0 + 0 = {\tt nd}(a) + {\tt ni}
-  (a)$$
 
-  Como $a$ era un elemento cualquiera de ATOM, no importa si es alguna variable
-  o alguna constante lógica. Para cualquiera se cumple.
-
-  % Hipotesis de inducción
-  Ahora supogamos $\varphi$ y $\psi$ son dos elementos cualesquiera de PROP
-  tales que:
-  \begin{align*}
-    {\tt nd}({\tt qi}(\varphi)) &= {\tt nd}(\varphi) + {\tt ni}(\varphi) & (1)\\
-    {\tt nd}({\tt qi}(\psi)) &= {\tt nd}(\psi) + {\tt ni}(\psi) & (2)
-  \end{align*}
-  
-  Lo que ahora buscaremos  es constuir elementos de PROP, con $\varphi$ y
-  $\psi$. ¿Como hacemos eso?, con los conectivos lógicos.
-  
-  %Paso inductivo.
-  \hfill\break
-  {\bf Negación:}
-
-  Si construimos $\gamma$ como la negación de $\varphi$, tambien es un elemento
-  de PROP. Con lo que ahora, siguiendo la construcción de nd , ni y
-  $\gamma$ tenemos:
-   \begin{align*}
-   {\tt nd}(\gamma) &= {\tt nd}(\neg\varphi) = {\tt nd}(\varphi) & (3) \\
-   {\tt ni}(\gamma) &= {\tt ni}(\neg\varphi) = {\tt ni}(\varphi) & (4)
-   \end{align*}
-   Entonces:
-   \begin{align*}
-     {\tt nd}({\tt qi}(\gamma)) &= {\tt nd}({\tt qi}(\neg\varphi)) & \text{
-       Por la construcción de } \gamma \\
-     &= {\tt nd}(\neg{\tt qi}(\varphi)) & \text{ Por definición de qi} \\
-     &= {\tt nd}({\tt qi}(\varphi)) & \text{ Por definición de nd} \\
-     \end{align*}
-   Por otro lado:
-   \begin{align*}
-     {\tt nd}(\gamma) + {\tt ni}(\gamma) &= {\tt nd}(\varphi) +
-     {\tt ni}(\varphi) & \text{Por } (3)(4)
-   \end{align*}
-   Así,
-   $$ {\tt nd}({\tt qi}(\gamma)) = {\tt nd}({\tt qi}(\varphi)) =
-   {\tt nd}(\varphi) + {\tt ni}(\varphi) = {\tt nd}(\gamma) +
-   {\tt ni}(\gamma)$$
-   Con lo que $\gamma = \neg\varphi$ cumple con la propiedad.
-
-   \hfill\break
-   {\bf Conjunción:}
-
-   Ahora construimos $\gamma_1 = \varphi \land \psi$. De acuerdo a las nuestras
-   definiciones de la preguna anterior tenemos:
-   \begin{align*}
-     {\tt nd}(\gamma_1) &= {\tt nd}(\varphi\land\psi) = {\tt nd}(\varphi) +
-     {\tt nd}(\psi)& (5) \\
-     {\tt ni}(\gamma_1) &= {\tt ni}(\varphi\land\psi) = {\tt ni}(\varphi) +
-     {\tt ni}(\psi)& (6)
-   \end{align*}
-   Ahora, desarrollando:
-   \begin{align*}
-     {\tt nd}({\tt qi}(\gamma_1)) &= {\tt nd}({\tt qi}(\varphi\land\psi))
-     & \text{
-       Por la construcción de } \gamma_1 \\
-     &= {\tt nd}({\tt qi}(\varphi)\land{\tt qi}(\psi)) & \text{
-       Por definición de qi} \\
-     &= {\tt nd}({\tt qi}(\varphi)) + {\tt nd}({\tt qi}(\psi)) &
-       \text{ Por definición de nd} \\
-   \end{align*}
-   Seguimos desarrollando:
-   \begin{align*}
-     {\tt nd}({\tt qi}(\varphi)) + {\tt nd}({\tt qi}(\psi)) &=
-     {\tt nd}(\varphi) + {\tt ni}(\varphi)+{\tt nd}(\psi) + {\tt ni}(\psi)
-     & &\text{Por } (1)(2)\\
-     &= {\tt nd}(\varphi) ++{\tt nd}(\psi) + {\tt ni}(\varphi) + 
-     {\tt ni}(\psi) & &\text{Agrupando}\\
-     &=  {\tt nd}(\gamma_1) + {\tt ni}(\gamma_1)& &\text{Por } (5)(6)
-     \end{align*}
-
-   Así, $\gamma_1$ cumple con la propiedad descrita:
-   $${\tt nd}({\tt qi}(\gamma_1) = {\tt nd}(\gamma_1) + {\tt ni}(\gamma_1)$$
-   
-   \hfill\break
-   {\bf Equivalecía:}
-       
-   Es similar a la conjunción. Construimos $\gamma_2 =
-   \varphi \leftrightarrow\psi$, siguiendo nuestras definiciones:
-   \begin{align*}
-     {\tt nd}(\gamma_2) &= {\tt nd}(\varphi\leftrightarrow\psi) =
-     {\tt nd}(\varphi) + {\tt nd}(\psi)& (7) \\
-     {\tt ni}(\gamma_2) &= {\tt ni}(\varphi\leftrightarrow\psi) =
-     {\tt ni}(\varphi) + {\tt ni}(\psi)& (8)
-   \end{align*}
-   Tenemos:
-   \begin{align*}
-     {\tt nd}({\tt qi}(\gamma_2)) &= {\tt nd}({\tt qi}(\varphi\leftrightarrow
-     \psi))& \text{Por la construcción de } \gamma_2 \\
-     &= {\tt nd}({\tt qi}(\varphi)\leftrightarrow{\tt qi}(\psi)) & \text{
-       Por definición de qi} \\
-     &= {\tt nd}({\tt qi}(\varphi)) + {\tt nd}({\tt qi}(\psi)) &
-       \text{ Por definición de nd} \\
-   \end{align*}
-   Desarollamos:
-   \begin{align*}
-     {\tt nd}({\tt qi}(\varphi)) + {\tt nd}({\tt qi}(\psi)) &=
-     {\tt nd}(\varphi) + {\tt ni}(\varphi)+{\tt nd}(\psi) + {\tt ni}(\psi)
-     & &\text{Por } (1)(2)\\
-     &= {\tt nd}(\varphi) + {\tt nd}(\psi) + {\tt ni}(\varphi) +
-     {\tt ni}(\psi) & &\text{Agrupando}\\
-     &=  {\tt nd}(\gamma_2) + {\tt ni}(\gamma_2)& &\text{Por } (7)(8)
-     \end{align*}
-
-   $\gamma_2$ cumple con la propiedad descrita:
-   $${\tt nd}({\tt qi}(\gamma_2) = {\tt nd}(\gamma_2) + {\tt ni}(\gamma_2)$$
-   \hfill\break
-   {\bf Disyunción:}
-
-   Ahora construimos $\gamma_3 = \varphi \lor \psi$. De acuerdo a nuestras
-   respuestas al inciso anterior:
-   \begin{align*}
-     {\tt nd}(\gamma_3) &= {\tt nd}(\varphi\lor\psi) = 1 +
-     {\tt nd}(\varphi) + {\tt nd}(\psi)& &(9) \\
-     {\tt ni}(\gamma_3) &= {\tt ni}(\varphi\lor\psi) =
-     {\tt ni}(\varphi) + {\tt ni}(\psi)& &(10)
-   \end{align*}
-   Tenemos:
-   \begin{align*}
-     {\tt nd}({\tt qi}(\gamma_3)) &= {\tt nd}({\tt qi}(\varphi\lor
-     \psi))& \text{Por la construcción de } \gamma_3 \\
-     &= {\tt nd}({\tt qi}(\varphi)\lor{\tt qi}(\psi)) & \text{
-       Por definición de qi} \\
-     &= 1 + {\tt nd}({\tt qi}(\varphi)) + {\tt nd}({\tt qi}(\psi)) &
-       \text{ Por definición de nd} \\
-   \end{align*}
-   Desarollamos:
-   \begin{align*}
-     1 + {\tt nd}({\tt qi}(\varphi)) + {\tt nd}({\tt qi}(\psi)) &= 1 +
-     {\tt nd}(\varphi) + {\tt ni}(\varphi)+{\tt nd}(\psi) + {\tt ni}(\psi)
-     & &\text{Por } (1)(2)\\
-     &= 1+ {\tt nd}(\varphi) + {\tt nd}(\psi) + {\tt ni}(\varphi) +
-     {\tt ni}(\psi) & &\text{Agrupando}\\
-     &=  {\tt nd}(\gamma_3) + {\tt ni}(\gamma_3)& &\text{Por } (9)(10)
-     \end{align*}
-
-   $\gamma_3$ cumple con la propiedad descrita:
-   $${\tt nd}({\tt qi}(\gamma_3) = {\tt nd}(\gamma_3) + {\tt ni}(\gamma_3)$$
-   \hfill\break
-   {\bf Implicación:}
-   
-   Ahora construimos $\gamma_4 = \varphi \rightarrow \psi$. Siguiendo nuestras
-   definiciones de ni y nd:
+  Siguiendo la \textit{proposición tres de la nota tres} y la forma normal
+  negativa calculada el inciso anterior, siendo bien explicitos solo en el
+  primero y en los demás siguiendo lo dicho en este:
+  \begin{itemize}
+  \item $M\rightarrow (\neg P \lor \neg F)$
     \begin{align*}
-      {\tt nd}(\gamma_4) &= {\tt nd}(\varphi\rightarrow\psi) = {\tt nd}
-      (\varphi) + {\tt nd}(\psi)& (11) \\
-      {\tt ni}(\gamma_4) &={\tt ni}(\varphi\rightarrow\psi) = 1 + {\tt ni}
-      (\varphi) +
-     {\tt ni}(\psi)& (12)
-   \end{align*}
-   Ahora, desarrollando:
-   \begin{align*}
-     {\tt nd}({\tt qi}(\gamma_4)) &= {\tt nd}({\tt qi}(\varphi\rightarrow\psi))
-     & \text{Por la construcción de } \gamma_4 \\
-     &= {\tt nd}(\neg({\tt qi}(\varphi))\lor {\tt qi}(\psi)) & \text{
-       Por definición de qi} \\
-     &= 1+ {\tt nd}(\neg{\tt qi}(\varphi)) + {\tt nd}({\tt qi}(\psi)) &
-     \text{ Por definición de nd} \\
-     &= 1+ {\tt nd}({\tt qi}(\varphi) + {\tt nd}({\tt qi}(\psi)) &
-     \text{ Por definición de nd} \\
-   \end{align*}
-   Seguimos desarrollando:
-   \begin{align*}
-     1+{\tt nd}({\tt qi}(\varphi)) + {\tt nd}({\tt qi}(\psi)) &= 1+
-     {\tt nd}(\varphi) + {\tt ni}(\varphi)+{\tt nd}(\psi) + {\tt ni}(\psi)
-     & &\text{Por } (1)(2)\\
-     &= {\tt nd}(\varphi) ++{\tt nd}(\psi) + 1 + {\tt ni}(\varphi) + 
-     {\tt ni}(\psi) & &\text{Agrupando}\\
-     &=  {\tt nd}(\gamma_4) + {\tt ni}(\gamma_4)& &\text{Por } (11)(12)
-     \end{align*}
+      M\rightarrow (\neg P \lor \neg F) &\equiv \neg M  \lor
+      \neg P \lor \neg F & &\text{fnn}
+    \end{align*}
+    $M$ es un átomico, entonces $\neg M$ es una literal. Dada la definición de
+    clausula $\neg M$ es una  una clausula, sea $C_1'$.
 
-   Por ultimo, $\gamma_4$ cumple con la propiedad descrita:
-   $${\tt nd}({\tt qi}(\gamma_4) = {\tt nd}(\gamma_4) + {\tt ni}(\gamma_4)$$
+    \hfill\break
+    $P$ es un átomico, entonces $\neg P$ es una literal. Junto a la clausula
+    $C_1$, $\neg P \lor C_1'$ tambíen es una clausula, llamemosla $C_2'$.
 
-   Dados $\varphi$ y $\psi$ acabamos de construir todos los elementos
-   $inmediatos$ posibles de PROP utilizando los conectivos lógicos sin repetir.
+    \hfill\break
+    $F$ es un átomico, $\neg F$ es una literal. Así $\neg F \lor C_2'$ es
+    tambíen una clausula, sea $C_1$.
 
-   El hecho que $\varphi$ y $\psi$ cumplieran con la propiedad implique
-   que los elementos $inmediatos$ también la cumplan y que $\varphi$ y $\psi$
-   eran elementos cualesquiera concluimos que para todos los elementos,
-   fórmulas, de PROP se cumple:
-   $${\tt nd}({\tt qi}\,(\varphi)) = {\tt nd}(\varphi) + {\tt ni}(\varphi)$$
+    \hfill\break
+    $\top$  es un átomico y así una literal y una clausula. Y además
+    $C_1 \equiv C_1 \land\top$
+
+    \hfill\break
+    Al $C_1$ y $\top$ ser clausulas, $C_1 \land \top$ es una forma normal conjuntiva. Entonces:
+    $$fnc(M\rightarrow (\neg P \lor \neg F)) = C_1 \land \top=
+    (\neg M  \lor\neg P \lor \neg F) \land \top \equiv \neg M
+    \lor\neg P \lor\neg F$$
+
+  \item $ F\rightarrow S$
+    \begin{align*}
+      F\rightarrow S &\equiv \neg F \lor S  & &\text{fnn}\\
+      &\equiv (\neg F \lor S)  \land \top& &\text{juntando dos clausulas}\\
+      &= fnc(F\rightarrow S)
+    \end{align*}
+    
+  \item$(S\land P) \rightarrow M$
+    \begin{align*}
+      (S\land P) \rightarrow M &\equiv \neg S \lor \neg P \lor M& &\text{fnn}\\
+      &\equiv (\neg S \lor \neg P \lor M) \land \top & &
+      \text{juntando clausulas}\\
+      &= fnc((S\land P) \rightarrow M)
+    \end{align*}
+    
+  \item $P$
+    $$P\land\top$$
+  \end{itemize}
+  \rmfamily
+  \newpage
+  % 04
+\item Usando resolución binaria indica si {\it Fernando no es alto} es consecuencia lógica del conjunto de fórmulas.
+  \hfill\break
+  \ttfamily
+  %Respoesta
+ {\bf Solución:}
+
+ Sea $\Gamma = \{M\rightarrow (\neg P \lor \neg F), F\rightarrow S,
+ (S\land P) \rightarrow M,P\}$, queremos ver si:
+ $$\Gamma\models \neg F$$
+ Que con lo visto en clase basta demostrar que $\Gamma \cup \{\neg\neg F\}$ es
+ insatisfasible, que es lo que haremos a continuación.
+
+ \hfill\break
+ El conjunto de formas normales conjuntivas para $\Gamma \cup \{\neg\neg F\}$ es:
+ $$\{ \neg M  \lor\neg P \lor \neg F, \neg F \lor S, \neg S \lor \neg P \lor M,
+ P, F \}$$
+
+ De aquí obtenemos la siguiente derivación de $\square$:
+ \begin{align*}
+   1. \hspace{0.25cm}&\neg M  \lor\neg P \lor \neg F & &\text{Hip}\\
+   2. \hspace{0.25cm}&\neg F \lor S & &\text{Hip}\\
+   3. \hspace{0.25cm}&\neg S \lor \neg P \lor M & & \text{Hip}\\
+   4. \hspace{0.25cm}&P & &\text{Hip}\\
+   5. \hspace{0.25cm}&F & &\text{Hip}\\
+   6. \hspace{0.25cm}&S & &\text{Res}(2,5)\\
+   7. \hspace{0.25cm}&\neg P\lor M & &\text{Res}(3,6)\\
+   8. \hspace{0.25cm}&M & &\text{Res}(4, 7)\\
+   9. \hspace{0.25cm}&\neg P \lor \neg F & &\text{Res}(1,8)\\
+   10. \hspace{0.25cm}&\neg F & &\text{Res}(4, 9)\\
+   11. \hspace{0.25cm}&\square & &\text{Res}(5, 10)
+ \end{align*}
+ De manera que el argumento es correcto y {\it Fernando no es alto} es
+ consecuencia de la información dada.
 \end{enumerate}
 \end{document}
