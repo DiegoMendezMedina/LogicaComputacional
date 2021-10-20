@@ -139,7 +139,7 @@ elimEquiv (Neg prop) = Neg (elimEquiv prop)
 elimEquiv (Or prop1 prop2) = Or (elimEquiv prop1) (elimEquiv prop2)
 elimEquiv (And prop1 prop2) = And (elimEquiv prop1) (elimEquiv prop2)
 elimEquiv (Impl prop1 prop2) = Impl (elimEquiv prop1) (elimEquiv prop2)
-elimEquiv (Syss prop1 prop2) = And (Impl (elimEquiv prop1) (elimEquiv prop2)) (Impl (elimEquiv prop2) (elimEquiv prop2))
+elimEquiv (Syss prop1 prop2) = And (Impl (elimEquiv prop1) (elimEquiv prop2)) (Impl (elimEquiv prop2) (elimEquiv prop1))
 
 
 --Dada una prop elñimina las implicaciones
