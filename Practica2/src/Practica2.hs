@@ -29,15 +29,12 @@ fnn' (Neg (Or psi phi)) = And (fnn'(Neg psi)) (fnn'(Neg phi))
 
 -- |2| Funcion distr la cual aplica adecuadamente las leyes distributivas a una formula proposicional
 distr :: Prop -> Prop
-distr (P psi) = (P psi)
-distr (Neg (P psi)) = (Neg (P psi))
 distr (Or (P psi)(P phi)) = (Or (P psi)(P phi)) -- a a
 distr (Or (Neg(P psi))((P phi))) = (Or (Neg(P psi))((P phi))) -- -a a
 distr (Or ((P psi))(Neg(P phi))) = (Or ((P psi))(Neg(P phi))) -- a -a
 distr (Or (Neg(P psi))(Neg(P phi))) = (Or (Neg(P psi))(Neg(P phi))) -- -a -a
-distr (Or psi (And alpha beta)) = And (distr(Or (fnc psi) (fnc alpha))) (distr(Or (fnc psi)
-                                                                               (fnc beta)))
-distr psi = P 'D'
+distr (Or psi (And alpha beta)) = And ((Or psi alpha)) ((Or psi beta))
+distr (Or (And alpha beta) psi) = And ((Or alpha psi)) ((Or beta psi))
 
 -- | distr: leyes distributivas que recibe dos elementos de Prop. Unicamente se manda
 --          llamar cuando en fnc se presenta un or. Checa la distributividad cuando
@@ -61,7 +58,7 @@ fnc :: Prop -> Prop
 fnc (P phi) = (P phi)
 fnc (Neg (P phi)) = Neg (P phi)
 fnc (And phi psi) = And (fnc phi)(fnc psi)
---fnc (Or phi psi) = distr_dos (fnc phi) (fnc psi)
+--fnc (Or phi psi) = distr (Or (fnc phi) (fnc psi))
 fnc (Or phi psi) = distr_dos(fnc phi) (fnc psi)
 
 --Definimos un tipo de dato Literal como sinónimo de fórmula proposicional
@@ -98,7 +95,7 @@ getAtoms (Or phi psi) = getAtoms phi ++ getAtoms psi
 
 -- |6| Funcion fncConj recibe una proposicion y devuelve el conjunto de clausulas equivalentes a esa proposicion
 fncConj :: Prop -> [Clausula]
-fncConj phi = elimDup(fncC(fnc(fnn phi)))
+fncConj phi = elimTautologias(elimDup(fncC(fnc(fnn phi))))
 
 -- | elimDup: función auxiliar que elimina los elementos repetidos para cada lista de clausulas.
 elimDup :: [Clausula] -> [Clausula]
@@ -226,4 +223,6 @@ fncprim = fnc(fnn prim) -- Funciona
 fncseg = fnc(fnn seg) -- Tmb funciona yupi
 
 ejem = (Syss (And a b)(Or (And b a)(c)))
-       
+ejemfnc = fnc (fnn ejem) -- bien
+ejemcC = fncC ejem
+ejemcCsin = fncConj ejem
