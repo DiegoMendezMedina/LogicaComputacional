@@ -1,0 +1,192 @@
+\documentclass[8pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{csquotes}
+\usepackage{multicol}
+
+\usepackage{qtree}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\title{%
+  Ejercicio Semanal 6\\
+  {\large{}}}
+\author{Diego Méndez Medina}
+\date{}
+\begin{document}
+\ttfamily
+\maketitle
+\rmfamily
+Considera el siguiente lenguaje:
+
+\hfill\break
+{\bf Consonantes:} $\{a, b, c, d, e, f\}$
+
+\hfill\break
+{\bf Predicados:} $\{\text{Sobre}^2, \text{Libre}^1, \text{Rojo}^1,
+\text{Blanco}^1, \text{Verde}^1\}$
+
+\begin{enumerate}
+\item Utilizando el lenguaje anterior formaliza los siguientes enunciados:
+  \begin{enumerate}
+    % 1.a
+  \item $a$ está sobre $c$ y $d$ está sobre $f$ o sobre $c$.
+
+    $$Sobre(a, c) \land (Sobre(d, f) \lor Sobre(d, c))$$
+    % 1.b
+  \item $a$ es verde pero $c$ no lo es.
+    $$Verde(a) \land \neg Verde(c)$$
+    % 1.c
+  \item Todo esta sobre algo.
+    
+    Como no conocemos el universo, asumimos que se refiere a todo elemento
+    de este, así:
+    $$\forall x \exists y\ Sobre(x,y)$$
+    % 1.d
+  \item No hay nada sobre todo lo que esta libre.
+    $$\forall x (Libre(x)\rightarrow \neg(\exists y Sobre(y,x)))$$
+    $$\equiv \forall x (Libre(x)\rightarrow \forall y \neg Sobre(y,x))$$
+    % 1.e
+  \item Hay algo rojo que no está libre.
+    $$\exists x(Rojo(x) \rightarrow \neg Libre(x))$$
+    % 1.f
+  \item Todo lo que no es verde y esta sobre $b$ es rojo.
+    $$\forall x((\neg Verde(x) \land Sobre(x, b)) \rightarrow Rojo(x))$$
+  \end{enumerate}
+  %2:
+\item Considera las siguientes interpretaciones:
+  
+  {\bf Interpretación} $\mathcal{I}_1:$
+  \begin{itemize}
+  \item $\mathcal{I}_1(a) = b_1$, $\mathcal{I}_1(b) = b_2$,
+    $\mathcal{I}_1(c) = b_3$, $\mathcal{I}_1(d) = b_4$
+    $\mathcal{I}_1(e) = b_5$, $\mathcal{I}_1(f) = table$
+  \item $\mathcal{I}_1(Sobre) = \{<b_1, b_4>, <b_4, b_3>, <b_3, table>,
+    <b_5, b_2>, <b_2, table>\}$
+  \item $\mathcal{I}_1(Libre) = \{b_1, b_5\}$
+  \item $\mathcal{I}_1(Verde) = \{b_4\}$
+  \item $\mathcal{I}_1(Rojo) = \{b_1, b_5\}$
+  \item $\mathcal{I}_1(Blanco) = \{b_3, b_2\}$
+  \end{itemize}
+
+  {\bf Interpretación} $\mathcal{I}_2:$
+
+  \begin{itemize}
+  \item $\mathcal{I}_2(a) = hat$, $\mathcal{I}_2(b) = Joe$,
+    $\mathcal{I}_2(c) = bike$, $\mathcal{I}_2(d) = Jill$,
+    $\mathcal{I}_2(e) = case$, $\mathcal{I}_2(f) = piso$.
+  \item $\mathcal{I}_2(Sobre) = \{<hat, Joe>, <Joe, bike>, <bike, piso>,
+    <Jill, case>, <case, piso>\}$
+  \item $\mathcal{I}_2(Libre) = \{hat, Jill\}$
+  \item $\mathcal{I}_2(Verde) = \{hat, piso\}$
+  \item $\mathcal{I}_2(Rojo) = \{bike, case\}$
+  \item $\mathcal{I}_2(Blanco) = \{Joe, Jill\}$
+  \end{itemize}
+  Para cada formula del inciso anterior decide si es verdadera en
+  $\mathcal{I}_1$ y/o en $\mathcal{I}_2$.
+
+  \begin{itemize}
+  \item[] $\mathcal{I}_1$
+    \begin{itemize}
+    % 1.a
+    \item $Sobre(a, c) \land (Sobre(d, f) \lor Sobre(d, c))$
+      \begin{align*}
+        &\approx Sobre(b_1, b_3) \land (Sobre(b_4, table)\lor Sobre(b_4, b_3))\\
+        & & &<b_1, b_3> \notin \mathcal{I}_1(Sobre)\\
+        & & &\Rightarrow \mathcal{I}_1(Sobre(b_1, b_3)) = 0\\
+        &\approx 0 \land (Sobre(b_4, table)\lor Sobre(b_4, b_3))\\
+        &\text{No es verdadera en } \mathcal{I}_1
+      \end{align*}
+      
+      \hfill\break
+    % 1.b
+    \item $Verde(a) \land \neg Verde(c)$
+      \begin{align*}
+        &\approx Verde(b_1) \land \neg Verde(b_3)\\
+        & & &b_1\notin \mathcal{I}_1(Verde)\\
+        & & &\Rightarrow \mathcal{I}_1(Verde(b_1)) = 0\\
+        &\approx 0 \land \neg Verde(c)\\
+        &\text{No es verdadera en } \mathcal{I}_1
+      \end{align*}
+      
+      \hfill\break
+      % 1.c
+    \item $\forall x \exists y\ Sobre(x,y)$
+
+      \hfill\break
+      $a,b,c,d$ y $f$ son los elementos del universo, lo que buscamos
+      es que cada una de sus interpretaciones  aparezca como primer elemento
+      de alguna tupla en $\mathcal{I}_1(Sobre)$.
+
+      \hfill\break
+      Existe un elemento que no lo cumple, $table$, entonces no es verdadera en
+      $\mathcal{I}_1$.
+
+      \hfill\break
+      % 1.d
+    \item $\forall x (Libre(x)\rightarrow \forall y \neg Sobre(y,x))$
+
+      \hfill\break
+      Queremos ver que todos los elementos de $\mathcal{I}_1(Libre)$
+      no figuren como segundo elemento en alguna tupla de $\mathcal{I}_1(Sobre)$
+      \begin{align*}
+        \forall x (Libre(x)\rightarrow \forall y \neg Sobre(y,x))\\
+        &\approx (Libre(b_1)\rightarrow \forall y \neg Sobre(y,b_1)) \land
+        (Libre(b_5)\rightarrow \forall y \neg Sobre(y,b_5))\\
+        &\text{Es verdadera en } \mathcal{I}_1
+      \end{align*}
+
+      \hfill\break
+      % 1.e
+    \item $\exists x(Rojo(x) \rightarrow \neg Libre(x))$
+
+      \hfill\break
+      Para que sea verdadera debe existir un elemento que sea rojo y no este
+      libre. Es decir
+      $\mathcal{I}_1(Libre) \cap \mathcal{I}_1(Rojo) \neq \mathcal{I}_1(Rojo)$ 
+
+
+      \hfill\break
+      No es el caso, entonces no es verdadera en $\mathcal{I}_1$.
+
+      \hfill\break
+      % 1.f
+    \item $\forall x((\neg Verde(x) \land Sobre(x, b)) \rightarrow Rojo(x))$
+
+      \begin{align*}
+        &\approx \forall x((\neg Verde(x) \land Sobre(x, b_2)) \rightarrow
+        Rojo(x))
+      \end{align*}
+      Solo hay un elemento que resulta estar sobre $b_2$. Quitando los
+      elementos que son verdaderos por vacuidad:
+      \begin{align*}
+        &\approx \neg Verde(b_5) \land Sobre(b_5, b_2)) \rightarrow
+        Rojo(x)
+      \end{align*}
+      Así es verdadera en $\mathcal{I}_1$.
+    \end{itemize}
+    
+    % I_2
+  \item[] $\mathcal{I}_2$
+    \begin{enumerate}
+      % 1.a
+    \item[] $Sobre(a, c) \land (Sobre(d, f) \lor Sobre(d, c))$
+      % 1.b
+    \item[] $Verde(a) \land \neg Verde(c)$
+    % 1.c
+    \item[] $\forall x \exists y\ Sobre(x,y)$
+      % 1.d
+    \item[] $\forall x (Libre(x)\rightarrow \forall y \neg Sobre(y,x))$
+      % 1.e
+    \item[] $\exists x(Rojo(x) \rightarrow \neg Libre(x))$
+      % 1.f
+    \item[] $\forall x((\neg Verde(x) \land Sobre(x, b)) \rightarrow Rojo(x))$
+    \end{enumerate}
+  \end{itemize}
+\end{enumerate}
+\end{document}
