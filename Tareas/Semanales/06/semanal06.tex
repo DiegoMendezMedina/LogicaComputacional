@@ -58,8 +58,11 @@ Considera el siguiente lenguaje:
   \item Todo lo que no es verde y esta sobre $b$ es rojo.
     $$\forall x((\neg Verde(x) \land Sobre(x, b)) \rightarrow Rojo(x))$$
   \end{enumerate}
+  \newpage
   %2:
-\item Considera las siguientes interpretaciones:
+\item Para cada formula del inciso anterior decide si es verdadera en
+  $\mathcal{I}_1$ y/o en $\mathcal{I}_2$. Considera las siguientes
+  interpretaciones:
   
   {\bf Interpretación} $\mathcal{I}_1:$
   \begin{itemize}
@@ -74,22 +77,8 @@ Considera el siguiente lenguaje:
   \item $\mathcal{I}_1(Blanco) = \{b_3, b_2\}$
   \end{itemize}
 
-  {\bf Interpretación} $\mathcal{I}_2:$
-
-  \begin{itemize}
-  \item $\mathcal{I}_2(a) = hat$, $\mathcal{I}_2(b) = Joe$,
-    $\mathcal{I}_2(c) = bike$, $\mathcal{I}_2(d) = Jill$,
-    $\mathcal{I}_2(e) = case$, $\mathcal{I}_2(f) = piso$.
-  \item $\mathcal{I}_2(Sobre) = \{<hat, Joe>, <Joe, bike>, <bike, piso>,
-    <Jill, case>, <case, piso>\}$
-  \item $\mathcal{I}_2(Libre) = \{hat, Jill\}$
-  \item $\mathcal{I}_2(Verde) = \{hat, piso\}$
-  \item $\mathcal{I}_2(Rojo) = \{bike, case\}$
-  \item $\mathcal{I}_2(Blanco) = \{Joe, Jill\}$
-  \end{itemize}
-  Para cada formula del inciso anterior decide si es verdadera en
-  $\mathcal{I}_1$ y/o en $\mathcal{I}_2$.
-
+  NOTA: No considere transitiva $Sobre^2$, por que de haber sido así esos
+  elementos figurarian en la interpretación.
   \begin{itemize}
   \item[] $\mathcal{I}_1$
     \begin{itemize}
@@ -170,23 +159,76 @@ Considera el siguiente lenguaje:
       \end{align*}
       Así es verdadera en $\mathcal{I}_1$.
     \end{itemize}
-    
+
+    {\bf Interpretación} $\mathcal{I}_2:$
+
+  \begin{itemize}
+  \item $\mathcal{I}_2(a) = hat$, $\mathcal{I}_2(b) = Joe$,
+    $\mathcal{I}_2(c) = bike$, $\mathcal{I}_2(d) = Jill$,
+    $\mathcal{I}_2(e) = case$, $\mathcal{I}_2(f) = piso$.
+  \item $\mathcal{I}_2(Sobre) = \{<hat, Joe>, <Joe, bike>, <bike, piso>,
+    <Jill, case>, <case, piso>\}$
+  \item $\mathcal{I}_2(Libre) = \{hat, Jill\}$
+  \item $\mathcal{I}_2(Verde) = \{hat, piso\}$
+  \item $\mathcal{I}_2(Rojo) = \{bike, case\}$
+  \item $\mathcal{I}_2(Blanco) = \{Joe, Jill\}$
+  \end{itemize}
     % I_2
   \item[] $\mathcal{I}_2$
-    \begin{enumerate}
+    \begin{itemize}
       % 1.a
-    \item[] $Sobre(a, c) \land (Sobre(d, f) \lor Sobre(d, c))$
+    \item $Sobre(a, c) \land (Sobre(d, f) \lor Sobre(d, c))$
+      \begin{align*}
+        &\approx Sobre(hat, bike) \land (Sobre(Jill, piso) \lor
+        Sobre(Jill, bike))\\
+      \end{align*}
+      Como $Sobre^2$ no es transitiva, $<hat, bike>\notin\mathcal{I}_2(Sobre)$.
+      Con lo que no es verdadero en $\mathcal{I}_2$.
+
+      \hfill\break
       % 1.b
-    \item[] $Verde(a) \land \neg Verde(c)$
+    \item $Verde(a) \land \neg Verde(c)$
+      \begin{align*}
+        &\approx Verde(hat) \land \neg Verde(bike)
+      \end{align*}
+      Lo cual es verdadero en $\mathcal{I}_2$.
+
+      \hfill\break
     % 1.c
-    \item[] $\forall x \exists y\ Sobre(x,y)$
+    \item $\forall x \exists y\ Sobre(x,y)$
+
+      \hfill\break
+      Al igual que en la interpretación anterior hay un elemento del universo
+      , $piso$, que no figura como primer elemento en alguna tupla en
+      $\mathcal{I}_2(Sobre)$. Con lo que no es es verdadera en $\mathcal{I}_2$.
+
+      \hfill\break
       % 1.d
-    \item[] $\forall x (Libre(x)\rightarrow \forall y \neg Sobre(y,x))$
+    \item $\forall x (Libre(x)\rightarrow \forall y \neg Sobre(y,x))$
+      \begin{align*}
+        &\approx Libre(hat)\rightarrow \forall y \neg Sobre(y,hat)
+        \land Libre(Jill)\rightarrow \forall y \neg Sobre(y,Jill)
+      \end{align*}
+      Lo cual es verdadero en $\mathcal{I}_2$.
+
+      \hfill\break
       % 1.e
-    \item[] $\exists x(Rojo(x) \rightarrow \neg Libre(x))$
+    \item $\exists x(Rojo(x) \rightarrow \neg Libre(x))$
+
+      \hfill\break
+      Es verdadera pues $bike\in \mathcal{I}_2(Rojo) \land bike\notin
+      \mathcal{I}_2(Libre)$.
+
+      \hfill\break
       % 1.f
-    \item[] $\forall x((\neg Verde(x) \land Sobre(x, b)) \rightarrow Rojo(x))$
-    \end{enumerate}
+    \item $\forall x((\neg Verde(x) \land Sobre(x, b)) \rightarrow Rojo(x))$
+      \begin{align*}
+        &\approx \forall x((\neg Verde(x) \land Sobre(x, Joe)) \rightarrow
+        Rojo(x))
+      \end{align*}
+      Lo unico que esta sobre Joe es $hat$ y es verde. Así por vacuidad
+      es verdadero en $\mathcal{I}_2$.
+    \end{itemize}
   \end{itemize}
 \end{enumerate}
 \end{document}
