@@ -1,0 +1,173 @@
+\documentclass[8pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{csquotes}
+\usepackage{multicol}
+
+\usepackage{qtree}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\title{%
+  Ejercicio Semanal 7\\
+  {\large{}}}
+\author{Diego Méndez Medina}
+\date{}
+\begin{document}
+\ttfamily
+\maketitle
+\rmfamily
+
+Sea $\mathcal{L} = \{C^2, D^1, f^2, r^1\}$ y
+$\mathcal{M}=<Lista_{NAT}, \mathcal{I}>$ donde el mundo es el conjunto
+de listas finitas de números naturales y el signidicado de los simbolos es:
+\begin{itemize}
+\item $C^\mathcal{I} = \{ (l,l')| l'$ es la cola de $l\}$
+\item $D^\mathcal{I} = \{ l| l$ tiene longitud dos $\}$
+\item $r^\mathcal{I}$ calcula la reversa de $L$.
+\item $f^\mathcal{I}(l,l')$ deuelve la concatenación de
+  $l$ con $l'$
+\end{itemize}
+\begin{enumerate}
+\item Para cada una de las siguientes fórmulas da un estado
+  en donde se satisfaga y uno en donde no, mostrando paso a paso la apliación
+  de la definición de satisfacción.
+  \begin{enumerate}
+  \item $D(f(x,y)) \lor C(z, r(y))$
+    
+    Considere los siguientes estados:
+    \begin{align*}
+      \mathcal{I}_\alpha(x) &= [1] & \mathcal{I}_{\alpha'}(x) &= [0,0]\\
+      \mathcal{I}_\alpha(y) &= [1] & \mathcal{I}_{\alpha'}(y) &= [1, 1]\\
+      \mathcal{I}_\alpha(z) &= [] & \mathcal{I}_{\alpha'}(z) &= [0,1]\\
+    \end{align*}
+    \begin{itemize}
+      % Satisfasible
+    \item[$\mathcal{I}_\alpha$]:
+      Siguiendo la definición 5 de las notas del curso que se basan en la
+      definición de satisfacción de Tarski:
+      \begin{align*}
+        \mathcal{I}_\alpha(D(f(x,y)) \lor C(z, r(y))) &= 0 & &\text{si y solo si }\mathcal{I}_\alpha(D(f,(x,y))) = \mathcal{I}_\alpha(C(z, r(y))) = 0\\
+        \mathcal{I}_\alpha(f(x,y)) &= \mathcal{I}_\alpha(f([1],[1]))\\
+        &= [1,1]\\
+        \mathcal{I}_\alpha(D(f(x,y)) &= 1 & &\text{si y solo si }\mathcal{I}_\alpha([1,1])\in D^\mathcal{I_\alpha}\\
+        \rightarrow \mathcal{I}_\alpha(D(f(x,y)) &= 1 \neq 0 \\
+        \therefore \mathcal{I}_\alpha(D(f(x,y)) \lor C(z, r(y))) &= 1
+      \end{align*}
+      Así $D(f(x,y)) \lor C(z, r(y))$ es satisfasible en $\mathcal{M}$ pues $\mathcal{M} \models_\alpha D(f(x,y)) \lor C(z, r(y))$
+      \\
+      % No satisfasible
+    \item[$\mathcal{I}_{\alpha'}$]:
+      Siguiendo la definición de satisfacción:
+      \begin{align*}
+        \mathcal{I}_{\alpha'}(D(f(x,y)) \lor C(z, r(y))) &= 0 & &\text{si y solo si }\mathcal{I}_{\alpha'}(D(f,(x,y))) = \mathcal{I}_{\alpha'}(C(z, r(y))) = 0\\
+        \mathcal{I}_{\alpha'}(f(x,y)) &= \mathcal{I}_{\alpha'}(f([0,0],[1, 1]))\\
+        &= [0, 0, 1, 1]\\
+        \mathcal{I}_{\alpha'}(D(f(x,y)) &= 1 & &\text{si y solo si }\mathcal{I}_{\alpha'}([0, 0, 1, 1])\in D^\mathcal{I_{\alpha'}}\\
+        \rightarrow \mathcal{I}_{\alpha'}(D(f(x,y)) &= 0 \\
+        \mathcal{I}_{\alpha'}(C(z, r(y))) &= 1 & &\text{si y solo si }\mathcal{I}_{\alpha'}([0,1],[1,1])\in C^\mathcal{I_{\alpha'}}\\
+        [1] &\neq [1,1]\\
+        \rightarrow \mathcal{I}_{\alpha'}(C(z, r(y))) &= 0\\
+        \therefore \mathcal{I}_{\alpha'}(D(f(x,y)) \lor C(z, r(y))) &= 0
+      \end{align*}
+      Así $D(f(x,y)) \lor C(z, r(y))$ bajo $\mathcal{I}_{\alpha'}$ no es satisfasible en $\mathcal{M}$.
+    \end{itemize}
+  \item $\exists y(f(x,y) = f(y,x)\land D(r(x)))$
+
+    \hfill\break
+    Sea $\psi = f(x,y) = f(y,x)\land D(r(x))$. Considere los siguientes estados y constantes:
+    $$\{x,z,w\}\in \mathcal{M}$$
+    \begin{align*}
+      \mathcal{I}_\chi(x) &= [0, 0] & \mathcal{I}_{\chi'}(x) &= [0,0,0]\\
+      \mathcal{I}_\chi(z) &= [0] & \mathcal{I}_{\chi'}(z) &= []\\
+      \mathcal{I}_\chi(w) &= [2] & \mathcal{I}_{\chi'}(w) &= [1]\\
+    \end{align*}
+        \begin{itemize}
+      % Satisfasible
+    \item[$\mathcal{I}_\chi$]:
+      Siguiendo el método del inciso anterior:
+      
+      \begin{align*}
+        \mathcal{I}_\chi(\exists y(f(x,y) = f(y,x)\land D(r(x)))) &= 1 & &\text{si y solo si }\mathcal{I}_\chi[y/m](\psi) = 1 \text{ para alguna } m \in \mathcal{M}\\
+        \text{Intentemos con }\mathcal{I}_\chi[y/z](\psi)&:\\
+        \mathcal{I}_\chi(f(x,z) = f(z,x)\land D(r(x))) &= 1 & &\text{si y solo si } \mathcal{I}_\chi(f(x,z) = f(z,x)) = \mathcal{I}_\chi(D(r(x)) = 1\\
+        \mathcal{I}_\chi(f(x,z) = f(z,x)) &= 1 & &\text{si y solo si } f(x,z) = f(z,x)\\
+        f(x,z) &= [0,0,0]\\
+        &= f(z, x)\\
+        \rightarrow \mathcal{I}_\chi(f(x,z) = f(z,x)) &= 1\\
+        \mathcal{I}_\chi(D(r(x)) &= 1 & &\text{ si y solo si } \mathcal{I}_\chi(r(x))\in D^{\mathcal{I}_{chi}}\\
+        \mathcal{I}_\chi(r(x)) &= [0,0] \\
+        \rightarrow \mathcal{I}_\chi(D(r(x)) &= 1\\
+        \therefore \mathcal{I}_\chi(\exists y(f(x,y) = f(y,x)\land D(r(x)))) &= 1
+      \end{align*}
+      Así $\exists y(f(x,y) = f(y,x)\land D(r(x)))$ es satisfasible en $\mathcal{M}$ pues:
+      $$\mathcal{M} \models_\chi \exists y(f(x,y) = f(y,x)\land D(r(x)))$$
+      \\
+      % No satisfasible
+    \item[$\mathcal{I}_{\chi'}$]:
+      Siguiendo la definición de satisfacción:
+      \begin{align*}
+        \mathcal{I}_{\chi'}(\exists y(f(x,y) = f(y,x)\land D(r(x)))) &= 1 & &\text{si y solo si }\mathcal{I}_{\chi'}[y/m](\psi) = 1 \text{ para alguna } m \in \mathcal{M}\\
+        \text{Intentemos con }\mathcal{I}_{\chi'}[y/z](\psi)&:\\
+        \mathcal{I}_{\chi'}(f(x,z) = f(z,x)\land D(r(x))) &= 1 & &\text{si y solo si } \mathcal{I}_{\chi'}(f(x,z) = f(z,x)) = \mathcal{I}_{\chi'}(D(r(x)) = 1\\
+        \mathcal{I}_{\chi'}(D(r(x)) &= 1 & &\text{ si y solo si } \mathcal{I}_{\chi'}(r(x))\in D^{\mathcal{I}_{\chi'}}\\
+        \mathcal{I}_\chi(r(x)) &= [0,0,0] \\
+        \rightarrow \mathcal{I}_\chi(D(r(x)) &= 0\\
+        % segundo cambio
+        \text{Intentemos con }\mathcal{I}_{\chi'}[y/w](\psi)&:\\
+        \mathcal{I}_{\chi'}(f(x,w) = f(w,x)\land D(r(x))) &= 1 & &\text{si y solo si } \mathcal{I}_{\chi'}(f(x,w) = f(w,x)) = \mathcal{I}_{\chi'}(D(r(x)) = 1\\
+        \mathcal{I}_{\chi'}(D(r(x)) &= 1 & &\text{ si y solo si } \mathcal{I}_{\chi'}(r(x))\in D^{\mathcal{I}_{\chi'}}\\
+        \mathcal{I}_\chi(r(x)) &= [0,0,0] \\
+        \rightarrow \mathcal{I}_\chi(D(r(x)) &= 0\\
+        % tercer cambio
+        \text{Por último, intentemos con }\mathcal{I}_{\chi'}[y/x](\psi)&:\\
+        \mathcal{I}_{\chi'}(f(x,x) = f(x,x)\land D(r(x))) &= 1 & &\text{si y solo si } \mathcal{I}_{\chi'}(f(x,x) = f(x,x)) = \mathcal{I}_{\chi'}(D(r(x)) = 1\\
+        \mathcal{I}_{\chi'}(D(r(x)) &= 1 & &\text{ si y solo si } \mathcal{I}_{\chi'}(r(x))\in D^{\mathcal{I}_{\chi'}}\\
+        \mathcal{I}_\chi(r(x)) &= [0,0,0] \\
+        \rightarrow \mathcal{I}_\chi(D(r(x)) &= 0\\
+        \therefore \mathcal{I}_\chi(\exists y(f(x,y) = f(y,x)\land D(r(x)))) &= 0
+      \end{align*}
+      Así $\exists y(f(x,y) = f(y,x)\land D(r(x)))$ bajo $\mathcal{I}_{\chi'}$ no es satisfasible en $\mathcal{M}$.
+    \end{itemize}
+  \end{enumerate}
+  \newpage
+\item Decida si
+  $\mathcal{M} \models \forall x\forall y(D(x)\land C(x,y)\rightarrow
+  y = r(y))$
+  
+  Lo primero que vemos es que no figura ninguna variable libre en $ \forall x\forall y(D(x)\land C(x,y)\rightarrow
+  y = r(y))$. Entonces podemos ver a $\psi = (D(x)\land C(x,y)\rightarrow y = r(y))$. De forma que, de acuerdo a la última
+  propiedad de la sección 6 de las notas del curso:
+  $$\mathcal{M} \models \forall x\forall y(D(x)\land C(x,y)\rightarrow y = r(y)) \iff \mathcal{M} \models \psi$$
+
+  PD. $\mathcal{M} \models (D(x)\land C(x,y)\rightarrow y = r(y))$
+
+  \hfill\break
+  Sea $\mathcal{I}_\chi$ un estado cualquiera.
+
+  PD. $\mathcal{M} \models_\chi (D(x)\land C(x,y)\rightarrow y = r(y))$
+  
+  PD. $\mathcal{I}_\chi(D(x)\land C(x,y)\rightarrow y = r(y)) = 1$
+
+  \hfill\break
+  Supogamos que $\mathcal{I}_\chi(D(x)\land C(x,y)) = 1$.
+
+  Entonces por definición de $C$ y $D$, $x$ es una lista con dos
+  elementos e $y$ una con un único elemento, que resulta ser
+  el ultimo de $x$. Como $y$ tiene un único elemento
+  su reveresa es ella misma, es decir $y = r(y)$.
+  Por lo tanto $\mathcal{I}_\chi(D(x)\land C(x,y)\rightarrow y = r(y)) = 1$
+  
+  Como $\chi$ era un estado cualquiera, $y$ y $x$ constantes cualesquiera
+  y que $\mathcal{I}_\chi(D(x)\land C(x,y)) = 1$ implica que
+  $\mathcal{I}_\chi(y = r(y)) = 1$:
+  $$\mathcal{M} \models \psi$$
+  Lo que, por la propiedad enunciada al inicio de la solución, implica :
+  $$\mathcal{M} \models \forall x\forall y(D(x)\land C(x,y)\rightarrow y = r(y))$$
+\end{enumerate}
+\end{document}
