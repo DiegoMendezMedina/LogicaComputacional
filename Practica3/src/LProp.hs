@@ -5,7 +5,7 @@ import Data.Char
 {--Semántica formal de los conectivos lógicos--}
 
 --Tipo de datos que representan las formulas de la lógica proposicional
-data Prop = Top | Bot | P VarP | Neg Prop | Or Prop Prop | And Prop Prop | Impl Prop Prop | Syss Prop Prop deriving (Eq, Ord)
+data Prop = Top | Bot | P VarP |Neg Prop |Or Prop Prop | And Prop Prop | Impl Prop Prop | Syss Prop Prop deriving (Eq, Ord)
 
 --Tipo para definir variables en la lógica proposicional
 type VarP = Char

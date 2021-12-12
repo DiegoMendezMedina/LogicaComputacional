@@ -1,0 +1,138 @@
+\documentclass[8pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{csquotes}
+\usepackage{multicol}
+
+\usepackage{qtree}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\title{%
+  Ejercicio Semanal 5\\
+  {\large{}}}
+\author{Diego Méndez Medina}
+\date{}
+\begin{document}
+\ttfamily
+\maketitle
+\rmfamily
+\begin{enumerate}
+  
+\item Utilizando los predicados \texttt{Mine}\textit{(x)} que indica que la celda \textit{x} tiene una mina, \texttt{Cont}\textit{(x,n)} que indica que la celda \textit{x} contiene el número \textit{n} y \texttt{Adj}\textit{(x,y)} que indica la celda \textit{x} es adyacente a la celda \textit{y}, formaliza los siguientes enunciados:
+
+\begin{enumerate}
+\item Hay exactamente \textit{n} minas en el tablero.
+  
+  \hfill\break
+  \ttfamily
+  {\bf Solución:}
+
+  El universo son celdas del tablero y números, en partícular en $[1,8]$, así definimos los siguientes predicados para tipos:
+  \begin{align*}
+    C(x) &: x \text{ es celda}\\
+    N(x) &: x \text{ es un natural en }[1,8]
+  \end{align*}
+  Suponemos que el lenguaje tiene igualdad.
+
+  Para alguna $n$ fija tenemos:
+  \begin{align*}
+    &\exists x_1:C\;\exists x_2:C\;\exists\ ...\ \exists x_n:C.\;( Mine(x_1)\land Mine(x_2)\land ...\land Mine(x_n) \land x_1 \neq x_2\neq ...\neq x_n\land\\
+    &\forall y:C\setminus \{x_1,x_2,...,x_k\}\neg Minus(y))
+  \end{align*}
+  Ayudandonos de la transitividad de la igualdad y con ayuda de $Mine^1$ es que decimos que solo existen $n$ celdas y que todas ellas son diferentes.
+  Con el ultimo and decimos que los demás celdas no son minas.
+  \rmfamily
+\item Si una celda contiene el número \textit{k} entonces hay exactamente \textit{k} minas en las celdas adyacentes.
+
+  \hfill\break
+  \ttfamily
+  {\bf Solución:}
+  \begin{align*}
+    &\forall x:C.\; (\neg Mine(x) \rightarrow \exists k:N.\; Cont(x,k) \rightarrow \exists y_1:C\; \exists y_2:C\:\exists...\exists y_k:C.(\\
+    &Mine(y_1)\land Mine(y_2)\land...\land Mine(y_k) \land Adj(x,y_1)\land Adj(x,y_2)\land ... \land Adj(x,y_k)\land y_1\neq y_2\neq...\neq y_k\\
+    &\land \forall z:C\setminus\{y_1,...,y_k\} Adj(x,z)\rightarrow \neg Mine(z)))
+  \end{align*}
+  Para todas las celdas si no son minas entonces existe algún número en $[3,8]\subset [1,8]$ que indica el número de minas,distintas, las cuales son adyacentes a dicha celda y todos sus demás vecinos no son mina.
+  \rmfamily
+\item Si una celda contiene una mina, entonces todas sus celdas adyacentes contienen números u otras minas.
+  
+  \hfill\break
+  \ttfamily
+  {\bf Solución:}
+  \begin{align*}
+    \forall x:C(Mine(x) \rightarrow \forall y:C(Adj(x,y)\rightarrow \exists n:N\;Cont(y, n)\lor Mine(y)))
+  \end{align*}
+  \rmfamily
+\end{enumerate}
+\newpage
+\item Para cada una de las siguientes expresiones: indica el alcance de cada cuantificador, encuentra las variables libres de la expresión y aplica la sustitución $[x,y:=h(u,g(z)),h(w,x)]$
+\begin{enumerate}
+\item $\forall x (P(x) \rightarrow \exists y \neg R(f(x),y,f(y)))$
+  
+  \hfill\break
+  \ttfamily
+  {\bf Solución:}
+
+  \begin{itemize}
+  \item El alcance del cuantificador $\forall$ es la fórmula $(P(x) \rightarrow \exists y \neg R(f(x),y,f(y)))$.
+  \item El alcance del cuantificador $\exists$ es la fórmula $\neg R(f(x),y,f(y))$.
+  \item En la fórmula dada hay tres presencias de $x$ las cuales estan ligadas.
+  \item En la fórmula dada hay tres presencias de $y$ las cuales estan ligadas.
+  \end{itemize}
+  Así, no hay variables libres. Las dos variables que se desean
+  intercambiar no figuran en ninguna libre, de forma que aun que hagamos
+  una equivalencía $\alpha$ no ocurre la sustitución:
+  \begin{align*}
+    \forall x (P(x) \rightarrow \exists y \neg R(f(x),y,f(y)))[x,y:=h(u,g(z)),h(w,x)]&\equiv_\alpha \\
+    \forall p (P(p) \rightarrow \exists q \neg R(f(p),q,f(q)))[x,y:=h(u,g(z)),h(w,x)]&=\\
+    \forall p (P(p)[x,y:=h(u,g(z)),h(w,x)] \rightarrow
+    \exists q \neg R(f(p),q,f(q))[x,y:=h(u,g(z)),h(w,x)]) &= \\
+    \forall p (P(p)[x,y:=h(u,g(z)),h(w,x)] \rightarrow
+    \exists q \neg R(f(p),q,f(q))[x,y:=h(u,g(z)),h(w,x)]) &= \\
+    \forall p (P(p) \rightarrow\exists q \neg R(f(p),q,f(q))) 
+  \end{align*}
+
+  La sustitución no se puede hacer.
+  \rmfamily
+\item $\forall z \exists x \exists y(R(z,u,h(u,y)) \vee Q(u,h(z,u)))$
+  
+  \hfill\break
+  \ttfamily
+  {\bf Solución:}
+
+  \begin{itemize}
+  \item El alcance del cuantificador $\forall$ es la fórmula
+    $\exists x \exists y(R(z,u,h(u,y)) \vee Q(u,h(z,u)))$.
+  \item El alcance del primer cuantificador $\exists$ es la fórmula
+    $\exists y(R(z,u,h(u,y)) \vee Q(u,h(z,u)))$
+  \item El alcance del segundo cuantificador $\exists$ es la fórmula
+    $(R(z,u,h(u,y)) \vee Q(u,h(z,u)))$
+  \item En la fórmula dada hay tres presencias de $z$ las cuales estan ligada.
+  \item En la fórmula dada hay una presencia de $x$ la cual esta ligada. Solo
+    figura en el cuantificador, de forma que la podemos quitar.
+  \item En la fórmula dada hay dos presencias de $y$ las cuales estan ligadas.
+  \item En la fórmula dada hay cuatro presencias de $u$ las cuales estan
+    libres.
+  \end{itemize}
+  Al igual que en el inciso anterior, no hay presencía de variables libres
+  de las que deseamos sustituir, entonces:
+  \begin{align*}
+    \forall z \exists x \exists y(R(z,u,h(u,y)) \vee Q(u,h(z,u)))
+            [x,y:=h(u,g(z)),h(w,x)]&\equiv_\alpha\\
+    \forall p \exists q(R(p,u,h(u,q)) \vee Q(u,h(p,u)))
+            [x,y:=h(u,g(z)),h(w,x)]&=\\
+    \forall p \exists q(R(p,u,h(u,q))[x,y:=h(u,g(z)),h(w,x)]
+    \vee Q(u,h(p,u))[x,y:=h(u,g(z)),h(w,x)])&=\\
+    \forall p \exists q(R(p,u,h(u,q))
+    \vee Q(u,h(p,u)))
+  \end{align*}
+  No es posible hacer la sustitución.
+\end{enumerate}
+\end{enumerate}
+\end{document}

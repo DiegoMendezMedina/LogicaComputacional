@@ -1,0 +1,145 @@
+\documentclass[8pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{csquotes}
+\usepackage{multicol}
+
+\usepackage{qtree}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\title{%
+  Ejercicio Semanal 4\\
+  {\large{}}}
+\author{Diego Méndez Medina}
+\date{}
+\begin{document}
+\ttfamily
+\maketitle
+\rmfamily
+Decide si los siguientes argumentos son correctos utilizando el algoritmo DPLL,
+{\bf resolver el inciso 1 usando el árbol DPLL y el inciso 2 con el algoritmo
+  de búsqueda de modelos.}
+\begin{enumerate}
+  % 01
+\item Una condición necesaria para que la humanidad sea libre es que los seres
+  humanos no estén ligados a una esencia. Si Dios creo a los humanos, entonces
+  estamos ligados a una esencia. Es claro que los humanos somos libres. Por
+  lo tanto Dios no creo a los humanos.
+
+  \ttfamily
+  {\bf Solución:}
+
+  Utilizaremos el siguiente glosario:
+  \begin{itemize}
+  \item $H:$ La humanidad es libre.
+  \item $E:$ Los seres humanos están ligados a un escencia.
+  \item $D:$ Dios creo a los humanos.
+  \end{itemize}
+
+
+  \begin{multicols}{2}
+    Con lo que tenemos el siguiente argumento:
+  \begin{itemize}
+  \item $H \rightarrow \neg E$
+  \item $D \rightarrow E$
+  \item $H$ \\
+    \rule{.3\textwidth}{0.2mm}\\
+  \item $\therefore \neg D$
+  \end{itemize}
+  Pasandolo a forma normal conjuntiva:
+  \begin{enumerate}
+  \item $fnc(H \rightarrow \neg E ) \equiv \neg H \lor \neg E$
+  \item $fnc(D \rightarrow E) \equiv \neg D \lor E$
+  \item $H$ \\
+    \rule{.3\textwidth}{0.2mm}\\
+  \item $\therefore \neg D$
+  \end{enumerate}
+  \end{multicols}
+  Así tenemos el conjunto $S = \{\neg H\lor \neg E, \neg D\lor E, H, \neg D\}$
+  
+  \Tree[.$S$ [.RD$(\neg H)$ [.$\ \widehat{S}$ [.RCU$(\neg D)$ [.$\{\square\}$ ]][.RD$(E)$ [.$\ \widehat{S'}$ [.RCU$(\neg D)$ [.$\{\square\}$ ]]]]]]
+    [.RCU$(H)$ [.$S'$ [.RCU$(\neg E)$ [.$S''$ [.RLP$(O)$ [.$\{\}$ ]]]] [.RD$(E)$ [.$S'''$ [.RCU$(\neg D)$ [.$\{\square\}$ ]]]]]]
+  ]
+  
+  donde:
+  \begin{align*}
+    S' &= \{\neg E, \neg D\lor E, \neg D\} & S'' &= \{\neg D, \neg D\} & O &= \{\neg D, \neg D\} \\
+    S''' &= \{\square, \neg D\} & \widehat{S} &= \{\neg D\lor E, \square, \neg D\} & \widehat{S'} &= \{\square, \neg D\}
+  \end{align*}
+  
+  De forma que el argumento es correcto y existe un único modelo,  $M = \{H, \neg E\} \cup O = \{H, \neg E, \neg D\}$.
+  \rmfamily
+  %02
+\item Si la Sra. White lo hizo, lo hizo con la llave inglesa o con la cuerda.
+  Pero lo hizo con la cuerda si y sólo si el asesinato se cometió en el
+  vestíbulo. El asesinato se cometió en la cocina. Por lo tanto, si la Sra.
+  White lo hizo, lo hizo con la llave inglesa.
+
+  \ttfamily
+  {\bf Solución:}
+
+  Utilizaremos el siguiente glosario:
+  \begin{itemize}
+  \item $W :$ La sra. White lo hizo.
+  \item $I :$ La sra White lo hizo con la llave inglesa.
+  \item $C :$ La sra White lo hizo con la cuerda.
+  \item $V :$ El asesinato se cometió en el vestíbulo.
+  \item $K :$ El asesinato se cometió en la cocina.
+  \end{itemize}
+
+  \begin{multicols}{2}
+    Con lo que tenemos el siguiente argumento:
+    \begin{itemize}
+    \item $W \rightarrow (I \lor C)$
+    \item $C \leftrightarrow V$
+    \item $K$\\
+      \rule{.3\textwidth}{0.2mm}\\
+  \item $\therefore W \rightarrow I$
+    \end{itemize}
+    Pasandolo a forma normal conjuntiva:
+    \begin{enumerate}
+    \item $fnc(W \rightarrow (I \lor C)) \equiv \neg W \lor I \lor C$
+    \item $fnc(C \leftrightarrow V) \equiv (\neg C\lor V)\land(\neg V\lor C)$
+    \item $K$ \\
+      \rule{.3\textwidth}{0.2mm}\\
+    \item $\therefore \neg W \lor I$
+    \end{enumerate}
+  \end{multicols}
+  Así tenemos el conjunto $\{\neg W \lor I \lor C, \neg C\lor V, \neg V\lor C, K, \neg W\lor I\}$. Comenzamos:
+
+  \begin{align*}
+    &\text{Inicio} & \cdot &\models_? \{\neg W \lor I \lor C, \neg C\lor V, \neg V\lor C, K, \neg W\lor I\}\\
+    &\text{unit } K : & \cdot &\models_? \{\neg W \lor I \lor C, \neg C\lor V, \neg V\lor C, {\bf K}, \neg W\lor I\}
+    \triangleright K \models_? \{\neg W \lor I \lor C, \neg C\lor V, \neg V\lor C,\neg W\lor I\} \\
+    &\text{split } C: & K &\models_? \{\neg W \lor I \lor C, \neg C\lor V, \neg V\lor C,\neg W\lor I\}\\
+    & & \triangleright K, C &\models_? \{\neg W \lor I \lor C, \neg C\lor V, \neg V\lor C,\neg W\lor I\} (1)\\
+    & & \triangleright K, \neg C &\models_? \{\neg W \lor I \lor C, \neg C\lor V, \neg V\lor C,\neg W\lor I\} (2)
+  \end{align*}
+  
+  Procedemos a contestar el $(1)$ si llegamos al conjunto vacío no es necesario hacer $(2)$:
+  \begin{align*}
+    &\text{elim }C: &  K, C &\models_? \{\neg W \lor I \lor {\bf C}, \neg C\lor V, \neg V\lor {\bf C},\neg W\lor I\}
+    \triangleright K, C \models_? \{, \neg C\lor V,\neg V\lor {\bf C}, \neg W\lor I\}\\
+    &\text{elim }C: & K, C &\models_? \{\neg C\lor V,\neg V\lor {\bf C}, \neg W\lor I\} \triangleright
+    K, C \models_? \{, \neg C\lor V, \neg W\lor I\}\\
+    &\text{red }C: & K, C &\models_? \{{\bf \neg C}\lor V, \neg W\lor I\} \triangleright K, C \models_? \{ V, \neg W\lor I\}\\
+    &\text{unit }V: & K, C &\models_? \{ {\bf V}, \neg W\lor I\} \triangleright  K, C, V \models_? \{\neg W\lor I\}\\
+    &\text{split }I: & K, C, V &\models_? \{\neg W\lor I\} \triangleright K, C, V, I \models_? \{\neg W\lor I\} (3) :
+    \triangleright K, C, V, \neg I \models_? \{\neg W\lor I\} (4) \\
+  \end{align*}
+  Procedemos a resolver $(3)$, en caso de llegar a $\square$, volvemos a $(4)$:
+  \begin{align*}
+    &\text{elim }I: & K, C, V, I &\models_? \{\neg W\lor {\bf I}\} \triangleright K, C, V, I \models_? \{\}\\
+    &\text{success }: & K, C, V, I &\models_? \{\} \text{¡Correcto!}
+  \end{align*}
+
+  Basta con mostrar un modelo para ver que es correcto, acabamos de ver que $\{ K, C, V, I\}$ es un modelo,
+  así el argumento es correcto.
+\end{enumerate}
+\end{document}

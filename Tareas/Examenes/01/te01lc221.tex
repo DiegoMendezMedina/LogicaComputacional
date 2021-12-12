@@ -1,0 +1,413 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=2cm,includefoot]{geometry}
+\usepackage[spanish]{babel}
+
+\usepackage{csquotes}
+\usepackage{multicol}
+
+\usepackage{qtree}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\input{macroslc}
+
+\title{Lógica Computacional 2022-1\\
+Tarea Examen 1: Lógica Proposicional}
+\author{Diego Méndez Medina}
+\date{}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{enumerate}
+
+\medskip
+
+\item (\textbf{1 pt.}) Demuestre que las siguientes f\'ormulas son 
+  equivalentes utilizando 
+  interpretaciones.
+  \[
+  \vp_1 \leftrightarrow \vp_2 \qquad\qquad (\vp_1\land\vp_2)\lor(\lnot\vp_1\land\lnot\vp_2)
+  \]
+
+
+{\bf Solución:}
+
+Sabemos que cualesquiera dos fórmulas, $\vp_1$, $\vp_2$ son equivalentes si
+$I(\vp_1) = I(\vp_2)$ para toda interpretación $I$.
+
+Existen dos interpretaciones para $\vp_1$, $I(\vp_1) = 1$ y $I(\vp_1)=2$.
+Lo mismo ocurre con $\vp_2$. Tenemos $2^2$ estados distintos.
+Siguiendo la {\bf Definición 3} de la nota dos del curso:
+\begin{multicols}{2}
+  \begin{itemize}
+    % Ambas verdaderas
+  \item $I(\vp_1) = 1 \ \  I(\vp_2) = 1$
+    \begin{align*}
+      I(\vp_1 \leftrightarrow \vp_2) &= 1 \\
+      I((\vp_1\land\vp_2)\lor(\lnot\vp_1\land\lnot\vp_2)) &= 1 \lor 0 = 1
+    \end{align*}
+    % Ambas falsas
+  \item $I(\vp_1) = 0 \ \  I(\vp_2) = 0$
+    \begin{align*}
+      I(\vp_1 \leftrightarrow \vp_2) &= 1 \\
+      I((\vp_1\land\vp_2)\lor(\lnot\vp_1\land\lnot\vp_2)) &= 0 \lor 1 = 1
+    \end{align*}
+    % 0 1 
+  \item $I(\vp_1) = 0 \ \  I(\vp_2) = 1$
+    \begin{align*}
+      I(\vp_1 \leftrightarrow \vp_2) &= 0 \\
+      I((\vp_1\land\vp_2)\lor(\lnot\vp_1\land\lnot\vp_2)) &= 0 \lor 0 = 0
+    \end{align*}
+    % 1 0 
+    \item $I(\vp_1) = 1 \ \  I(\vp_2) = 0$
+  \begin{align*}
+    I(\vp_1 \leftrightarrow \vp_2) &= 0 \\
+    I((\vp_1\land\vp_2)\lor(\lnot\vp_1\land\lnot\vp_2)) &= 0 \lor 0 = 0
+  \end{align*}
+  \end{itemize}
+\end{multicols}
+Para cualquier interpretación $I$ tuvimos $I(\vp_1 \leftrightarrow \vp_2) =
+I((\vp_1\land\vp_2)\lor(\lnot\vp_1\land\lnot\vp_2))$, entonces son
+equivalentes.
+\medskip
+
+\item (\textbf{2 pts.}) Decida si el siguiente argumento es correcto utilizando 
+resolución binaria. \\
+  Indique el significado de las variables proposicionales usadas y muestre a 
+  detalle las transformaciones a la forma clausular.
+  
+  \begin{center}
+
+  \textit{Petronilo o Quel\'onico cometieron un crimen. \\ Petronilo estuvo 
+  fuera de la tienda donde se cometi\'o el crimen. \\Si Petronilo estaba fuera
+  de la tienda entonces no estaba en la escena del crimen. \\Si Petronilo
+  no estaba en la escena del crimen entonces \'el no pudo haber cometido
+  el crimen. \\Por lo tanto Quel\'onico debi\'o haber cometido el crimen.}
+
+  \end{center}
+  
+  {\bf Solución:}
+
+  Utilizaremos el siguiente glosario:
+  \begin{align*}
+    p &:= \text{Petronilo cometió un crimen} \\
+    q &:= \text{Quelónico cometió un crimen} \\
+    r &:= \text{Petronilo estuvo fuera de la tienda donde se cometió el crimen}\\
+    s &:= \text{Petronillo estuvo en la escena del crimen} \\
+  \end{align*}
+  
+    Con lo que tenemos el siguiente argumento:
+    \begin{itemize}
+    \item $p\lor q$
+    \item $r$
+    \item $r \rightarrow \neg s$
+    \item $\neg s \rightarrow \neg p$\\
+      \rule{.3\textwidth}{0.2mm}
+    \item $\therefore q$
+    \end{itemize}
+    Pasandolo a forma normal conjuntiva:
+    \begin{itemize}
+    \item $fnc(p\lor q) \equiv p\lor q$ \\
+      Justificación: Cada literal representan una clausula, la disyunción
+      de clausulas esta en FNC.
+    \item $fnc(r) \equiv r$ \\
+      Justificación: Una literal es una clausula unitaria con lo que
+      tambíen esta en FNC.
+    \item $fnc(r \rightarrow \neg s)\equiv \neg r \lor \neg s$ \\
+      Justificación: Utilizamos la equivalencía 
+      $\psi\rightarrow \phi \equiv \neg \psi \lor \phi$. La negación de
+      atomos son literales que a la vez son clausulas unitarias, su disyunción
+      esta en FNC.
+    \item $fnc(\neg s \rightarrow \neg p) \equiv \neg\neg s\lor\neg p\equiv
+      s\lor\neg p$\\
+      Justificación: Utilizamos la equivalencía antes mencionado, cancelamos
+      la doble negación y llegamos a la disyunción de dos clausulas
+      unitarias. \\
+      \rule{.3\textwidth}{0.2mm}
+    \item $\therefore fnc(q)$\\
+      Justificación: Un atomo es una literal que es una clausula
+      unitaria, esta en FNC.
+    \end{itemize}
+  Sea $\Gamma = \{p\lor q, r, \neg r\lor\neg s, s\lor\neg p \}$, las premisas
+  del argumento dado, queremos ver si:
+  $$ \Gamma\models q$$
+  Basta demostra que $ \Gamma\cup\{\neg q\}$ es insatisfasible. Procedemos
+  a hacerlo:
+  \begin{align*}
+    1.\  &p\lor q & &\text{Hip} \\
+    2.\  &r & &\text{Hip} \\
+    3.\  &\neg r\lor\neg s & &\text{Hip} \\
+    4.\  &s\lor\neg p & &\text{Hip} \\
+    5.\  &\neg q & &\text{Hip} \\
+    6.\  &p & &\text{Res(1,5)}\\
+    7.\  &s & &\text{Res(4,6)}\\
+    8.\  &\neg s & &\text{Res(2,3)}\\
+    9.\  &\square & &\text{Res(7, 8)}\\
+  \end{align*}
+  Con lo que el argumento es correcto.
+\medskip
+
+\item (\textbf{1.5 pts.})La función traducción negativa de Gödel-Gentzen se define como sigue: $\ggf(\vp)$ es la fórmula obtenida a partir de $\vp$ al colocar dos negaciones enfrente de cada variable proposicional y enfrente de cada disyunción. Por ejemplo
+  \[
+    \begin{array}{rcl}
+    \ggf\Big(p\land q\to r\lor \neg s\Big) &=& \neg\neg p\land \neg\neg q\to \neg\neg(\neg\neg r\lor \neg\neg\neg s)\\
+      \ggf\Big(\neg(\neg q\land (s\lor \bot))\Big) &=& \neg(\neg\neg\neg q\land \neg\neg(\neg\neg s\lor \bot))
+    \end{array}
+  \]
+
+  \begin{enumerate}
+  \item Defina $\ggf$ recursivamente y muestre que su definición es correcta aplicando su definición en el segundo ejemplo anterior.
+    
+    \hfill\break
+    {\bf Solución:}
+
+    Definimos $gg$:
+    \ttfamily
+    \begin{align*}
+      gg :: Prop &-> Prop\\
+      gg(\top) &= \top \\
+      gg(\bot) &= \bot \\
+      gg(p) &= \neg\neg p & &\text{Si $p$ es variable prop} \\
+      gg(\neg\vp) &= \neg(gg (\vp))\\
+      gg(\psi \lor \varphi) &= \neg\neg(gg(\psi)\lor gg(\vp))\\
+      gg(\psi \land \varphi) &= gg(\psi) \land gg(\varphi)\\
+      gg(\psi \rightarrow \varphi) &= gg(\psi) \rightarrow gg(\vp)\\
+      gg(\psi \leftrightarrow \varphi) &= gg(\psi) \leftrightarrow gg(\vp)\\
+    \end{align*}
+    Aplicamos la definición:
+    \begin{align*}
+      \ggf\Big(p\land q\to r\lor \neg s\Big) &= \ggf(p\land q)\to
+      \ggf(r\lor \neg s)\\
+      &= \ggf(p)\land \ggf(q)\to \neg\neg(\ggf(r)\lor \ggf(\neg s))\\
+      &= \neg\neg p\land \neg\neg q\to \neg\neg(\neg\neg r\lor \neg\ggf(s))\\
+      &= \neg\neg p\land \neg\neg q\to \neg\neg(\neg\neg r\lor \neg\neg\neg s) \\
+      \ggf\Big(\neg(\neg q\land (s\lor \bot))\Big) &=
+      \neg(\ggf(\neg q\land (s\lor \bot))) \\
+      &= \neg(\ggf(\neg q)\land \ggf(s\lor \bot)) \\
+      &= \neg(\neg\ggf(q)\land \neg\neg(\ggf(s)\lor \ggf(\bot))) \\
+      &= \neg(\neg\neg\neg q\land \neg\neg(\neg\neg s\lor \bot))
+    \end{align*}
+    \rmfamily
+  \item Demuestre que para cualquier fórmula $\vp$, se cumple que $\vp\equiv \ggf(\vp)$.
+
+    {\bf Solución:} con inducción estructural.
+
+    Sea $p$ cualquier variable proposiciónal:
+    \begin{itemize}
+    \item[$\bullet$] Si $I(p) = 0$ entonces:
+      $$I(\ggf(p)) = I(\neg\neg p) = \neg(I(\neg p)) = \neg(\neg(I( p))) =
+      \neg(\neg 0) = \neg 1 = 0$$
+    \item[$\bullet$] Si $I(p) = 1$ entonces:
+      $$I(\ggf( p)) = I(\neg\neg p) = \neg(I(\neg p)) = \neg(\neg(I(p))) =
+      \neg(\neg 1) = \neg 0 = 1$$
+    \end{itemize}
+    Son los únicos dos interpretaciones que puede tener $\vp$ y para cada una
+    de ellas fue igual a $\ggf(\vp)$. Como $\vp$ era una variable
+    prop cualquiera para cualquiera se cumple $\vp\equiv\ggf(\vp)$
+
+    \hfill\break
+    Sean $\vp$ y $\psi$ dos formulas cualquiera tales que
+    $\vp \equiv \ggf(\vp)$ y $\psi \equiv \ggf(\psi)$.
+
+    Al ser equivalentes para cualquier interpretaciones, $I$ tenemos:
+    $$I(\vp) = I(\ggf(\vp)) \ \ \ I(\psi) = I(\ggf(\psi))$$
+    \begin{itemize}
+    \item[$\bullet$] {\bf Negación}\\
+      \begin{align*}
+        \vp &\equiv \ggf(\vp) & &\text{Por hipotesis}\\
+        \neg\vp &= 0 & &\text{si } I(\vp) = 1 \\
+        \rightarrow \neg\ggf(\vp) &= 0 & & \text{Pues por hipotesis} I(\vp) =
+        I(\ggf(\vp))\\
+      \end{align*}
+      Pasa lo mismo en el caso $I(\vp) = 0$
+      
+    \item[$\bullet$] {\bf Or}\\
+      $I(\vp\lor\psi) = 0$ syss $I(\vp) = I(\psi) = 0$ \\
+      En tal caso $\ggf(\vp\lor\psi) = \neg\neg(\ggf(\vp)\lor\ggf(\psi))$ \\
+      Por doble negación: $\neg\neg(\ggf(\vp)\lor\ggf(\psi))
+      \equiv \ggf(\vp)\lor\ggf(\psi)$
+
+      Por hipotesis $\vp\lor\psi\equiv \ggf(\vp)\lor\ggf(\psi)$
+    \item[$\bullet$] {\bf Resto de conectivos}\\
+      Para el resto de conectivos no se le agregan negaciónes sobre el conectivo de forma que
+      para cualquier conectivo restante y para cualquier interpretación de $\vp$ y $\psi$ por
+      hipotesis de inducción es la misma a $\ggf(\vp)*\ggf(\psi)$, donde $*$ es cualquier conectivo
+      restante.
+    \end{itemize}
+    Mostramos los casos base y que occura para dos elementos cualesquiera de Prop implica que
+    se cumpla para las formulás ``siguientes''. Concluimos que $\vp\equiv\ggf(\vp)$ para toda $\vp$ en Prop.
+  \end{enumerate}
+  
+  \medskip
+    
+\item (\textbf{2pts.}) Decidir si el siguiente conjunto de fórmulas tiene al 
+menos un modelo utilizando el algoritmo DPLL. Debes mostrar los pasos detalladamente y en caso de que exista, verificar el modelo obtenido.
+
+\[
+  \{p\lor r,\;q\lor\neg r\lor s,\neg p,\;\neg q\lor\neg r\lor s,\;r,\;p\lor\neg q\lor \neg r\lor\neg s\}
+  \]
+
+  \hfill\break
+  {\bf Solución:}
+  
+  \begin{align*}
+    &\text{Inicio} & \cdot &\models_? \{p\lor r,\;q\lor\neg r\lor s,\neg p,\;\neg q\lor\neg r\lor s,\;r,\;p\lor\neg q\lor \neg r\lor\neg s\}\\
+    &\text{unit } r : & \cdot &\models_?   \{p\lor r,\;q\lor\neg r\lor s,\neg p,\;\neg q\lor\neg r\lor s,\;{\bf r},\;p\lor\neg q\lor \neg r\lor\neg s\}\\
+    & & &\triangleright r \models_? \{p\lor r,\;q\lor\neg r\lor s,\neg p,\;\neg q\lor\neg r\lor s,\;p\lor\neg q\lor \neg r\lor\neg s\}\\
+    &\text{elim }& r &\models_? \{p\lor {\bf r},\;q\lor\neg r\lor s,\neg p,\;\neg q\lor\neg r\lor s,\;p\lor\neg q\lor \neg r\lor\neg s\}\\
+    & & &\triangleright r \models_? \{q\lor\neg r\lor s,\neg p,\;\neg q\lor\neg r\lor s,\;p\lor\neg q\lor \neg r\lor\neg s\}\\
+    &\text{red x3 }& r &\models_? \{q\lor{\bf \neg r}\lor s,\neg p,\;\neg q\lor{\bf \neg r}\lor s,\;p\lor\neg q\lor {\bf \neg r}\lor\neg s\}\\
+    & & &\triangleright r \models_? \{q\lor s,\neg p,\;\neg q\lor s,\;p\lor\neg q\lor\neg s\}\\
+    &\text{unit }\neg p: & r &\models_? \{q\lor s,{\bf \neg p},\;\neg q\lor s,\;p\lor\neg q\lor\neg s\}\\
+    & & &\triangleright r, \neg p \models_? \{q\lor s,\;\neg q\lor s,\;p\lor\neg q\lor\neg s\}\\
+    &\text{red }& r, \neg p &\models_? \{q\lor s,\;\neg q\lor s,\;{\bf p}\lor\neg q\lor\neg s\}\\
+    & & &\triangleright r, \neg p \models_? \{q\lor s,\;\neg q\lor s,\;\neg q\lor\neg s\}\\
+    &\text{split } s: & r, \neg p &\models_? \{q\lor s,\;\neg q\lor s,\;\neg q\lor\neg s\}\\
+    & & &\triangleright r, \neg p, s \models_? \{q\lor s,\;\neg q\lor s,\;\neg q\lor\neg s\}(1)\\
+    & & &\triangleright r, \neg p, \neg s \models_? \{q\lor s,\;\neg q\lor s,\;\neg q\lor\neg s\}(2)
+  \end{align*}
+  Procedemos a resolver $(1)$ en caso de llegar a conflicto nos regresamos a hacer $(2)$:
+  \begin{align*}
+    &\text{elim x2}: & r, \neg p, s &\models_? \{q\lor {\bf s},\;\neg q\lor {\bf s},\;\neg q\lor\neg s\} \\
+    & & &\triangleright r, \neg p, s \models_? \{\neg q\lor\neg s\} \\
+    &\text{red }: & r, \neg p, s &\models_? \{\neg q\lor{\bf \neg s}\} \\
+    & & &\triangleright r, \neg p, s \models_? \{\neg q\}\\
+    &\text{unit }:\neg q & r, \neg p, s &\models_? \{{\bf \neg q}\}\\
+    & & &\triangleright r, \neg p, s, \neg q \models_? \{\}\\
+    &\text{succes }: & r, \neg p, s, \neg q &\models_? \{\} \triangleright ¡Correcto!
+  \end{align*}
+  De forma que el modelo es $\{r, \neg p, s, \neg q \}$, es decir la interpretación de todos ellos como verdadero debe satisfacer el conjunto inicial. Verifiquemoslo:
+  \begin{align*}
+    p\lor r &= 1 & &\text{Pues } I(r) = 1\\
+    q\lor\neg r\lor s &= 1 & &\text{Pues } I(s) = 1\\
+    \neg p&=1 & &\text{Pues }I(p) = 1\\
+    \neg q\lor\neg r\lor s &= 1 & &\text{Pues }I(\neg q) = 1\\
+    r &= 1 & &\text{Pues } I(r) = 1\\
+    p\lor\neg q\lor \neg r\lor\neg s &= 1 & &\text{Pues }I(\neg q) = 1
+  \end{align*}
+\item(\textbf{1.5 pts.}) {\it El piojo y la pulga se van a casar y han invitado a las nupcias a la mosca, el escarabajo y el abejorro. Estos finos invitados deben sentarse juntos en el banquete pero debido a viejos pleitos y supersticiones sabemos que:
+
+  \begin{itemize} 
+    \item La mosca no quiere sentarse junto al abejorro.
+    \item La mosca no quiere sentarse en la silla de la izquierda.
+    \item El escarabajo no quiere sentarse a la derecha del abejorro.
+    \end{itemize}}
+ 
+Represente esta información como una instancia del problema SAT, es decir mediante formas normales conjuntivas. Debe incluir la información implícita necesaria como que una silla sólo puede ocuparla un bicho, que cada bicho debe estar sentado y que ninguno ocupa más de una silla.
+
+{\bf Solución:}
+
+Sabemos que tienen que sentarse juntos, es decir uno debe ocupar la silla $n$ otro la silla $n+1$ y el otro la $n-1$ o la $n+2$. Entonces tenemos tres sillas
+enumeremoslas del $1$ al $3$. Con $m_i$ denotamos que la mosca se sento en la silla $i$, lo mismo occure con $e_i$ para el escarabajo y $a_i$ para el abejorro.
+
+Así comenzamos a modelar nuestras clausulas:
+
+Una silla puede ocuparla soló un bicho, entonces ei en la $1$ esta la mosca, no puede suceder $e_1$ ni $a_1$:
+$$ m_1 \rightarrow \neg e_1 \land\neg a_1$$
+Pero tambíen puede suceder que alguno de los otros dos este en la $1$ con lo que los otros no pueden, esto se ve así:
+$$ (m_1 \rightarrow \neg e_1 \land \neg a_1) \land (e_1 \rightarrow\neg m_1 \land \neg a_1) \land (a_1 \rightarrow \neg e_1 \land m_1)$$
+Lo extendemos a las demás sillas:
+$$ (m_2 \rightarrow \neg e_2 \land \neg a_2) \land (e_1 \rightarrow\neg m_2 \land \neg a_2) \land (a_2 \rightarrow \neg e_2 \land m_2)$$
+$$ (m_3 \rightarrow \neg e_3 \land \neg a_3) \land (e_1 \rightarrow\neg m_3 \land \neg a_3) \land (a_3 \rightarrow \neg e_3 \land m_3)$$
+
+Lo extendemos a fnc:
+$$ (\neg m_1 \lor (\neg e_1 \land \neg a_1)) \land (\neg e_1 \lor(\neg m_1 \land \neg a_1)) \land (\neg a_1 \lor( \neg e_1 \land m_1))$$
+$$ (\neg m_2 \lor (\neg e_2 \land \neg a_2)) \land (\neg e_1 \lor(\neg m_2 \land \neg a_2)) \land (\neg a_2 \lor(\neg e_2 \land m_2))$$
+$$ (\neg m_3 \lor (\neg e_3 \land \neg a_3)) \land (\neg e_1 \lor(\neg m_3 \land \neg a_3)) \land (\neg a_3 \lor \neg e_3 \land m_3))$$
+%Demas sillas
+
+Cada bicho debe estar sentado, entonces para cada silla uno debe estar sentado:
+$$ (m_1\lor e_1\lor a_1) \land (m_2\lor e_2\lor a_2) \land (m_3\lor e_3\lor a_3)$$
+
+Ninguno ocupa más de una silla, esto es:
+$$ \neg(m_1\land m_2\land m_3) \land \neg(e_1\land e_2\land e_3) \land  \neg(a_1\land a_2\land a_3) $$
+A fnc:
+$$ (\neg m_1\lor \neg m_2\lor \neg m_3) \land (\neg e_1\lor \neg e_2\lor \neg e_3) \land  (\neg a_1\lor  \neg a_2\lor \neg a_3) $$
+
+La mosca no quiere sentarse junto al abejorro:
+
+Suponiendo que la silla $3$ no está junto a la $1$:
+$$ \neg(m_1 \land a_2) \land \neg(m_2\land a_3) \land \neg(m_2\land a_1)$$
+a fnc:
+$$ (\neg m_1 \lor \neg a_2) \land (\neg m_2\lor \neg a_3) \land (\neg m_2\lor \neg a_1)$$
+
+La mosca no quiere sentarse en la silla de la izquierda.
+Suponiendo que la de la izquierda es la silla $1$:
+$$ \neg m_1$$
+
+El escarabajo no quiere sentarse a la derecha del abejorro.
+Suponiendo que la silla $1$ no esta a la derecha de la $3$:
+$$ \neg(e_2 \land a_1) \land \neg(e_3\land a_2)$$
+A fnc:
+$$ (\neg e_2 \lor \neg a_1) \land (\neg e_3\lor \neg a_2)$$
+\medskip
+
+\item(\textbf{2 pts.}) Una cláusula $\mathcal{C}=\ell_1\lor\ldots\lor\ell_k$ es de Horn si a lo más una de sus literales $\ell_i$ es positiva. Por ejemplo $\neg t\lor p\lor \neg q\lor \neg s$ es de Horn y $\neg t\lor p\lor q$ no es de Horn.
+  \begin{enumerate}
+  \item ?` existen cláusulas de Horn unitarias?  en caso afirmativo, de qué forma son.
+
+    Entendemos como clausulas unitarias a las clausulas que solo tienen una literal, así, siguiendo la definición de clausula de Horn, esa literal
+    debe tener a lo más una literal positiva, osea cero o una literal negativa. Entonces toda clásula de Horn unitaria es de la forma:
+    $$\mathcal{C}= l\ \ \ \ \mathcal{C}=\neg l$$
+  \item ?` existen cláusulas de Horn positivas?  en caso afirmativo, de qué forma son.
+
+    Entendemos como literales positivas a las que no son negaciones, de aquí se extiende la definición a clausulas. Es decir las clausulas
+    que no tienen literales negativas. Si es de Horn debe tener máximo una, de forma que si existen pero son clausulas con una solo literal
+    y está en forma positiva.
+  \item ?` existen cláusulas de Horn negativas?  en caso afirmativo, de qué forma son.
+
+    Sí, no está como requisito que tenga alguna literal positiva, la condición es que no rebase de una. De forma que las clausulas negativas de Horn
+    son las que no tienen ninguna literal positiva.
+    $$\mathcal{C}= \neg l_1\lor \neg l_2 \lor \neg l_3 \lor ... \lor \neg l_n$$
+  \item Una fórmula es de Horn si en su forma normal conjuntiva todas las cláusulas son de Horn. Dada una fórmula cualquiera $A$, ?` es posible hallar  una fórmula de Horn equivalente a A?
+
+    Creo que no por que $A = l_1\lor l_2$ es una fórmula que para la interpretación $I(l_1) = 1$ y $I(l_2)=0$ debe de ser verdadero, así todas las formulas equivalentes a A tienen que cumplir
+    con eso, no se me ocurre una formula en donde solo estén negados los atomicos y con conjunciónes de disyunciones que sea equivalente.
+    
+  \item Demuestre o refute la siguiente propiedad: un resolvente de dos cláusulas de Horn es necesariamente una cláusula de Horn.
+
+    {\bf Demostración:}
+
+    Sean $C_1$ y $C_2$ dos clausulas de Horn.
+
+    Si alguna de las dos no tiene literales positivas no es posible hacer resolvente.
+
+    Supongamos que son tales que si es posible hacer resolvente, sea $l_i$ positiva en alguna de las dos y $l_j$ negativa en la otra tales que $l_i = l_j^c$. Al hacer resolvente nos queda:
+    $$C_i\setminus \{l_i\} \cup C_j\setminus \{l_j\}$$
+    De forma que en $C_i\setminus \{l_i\}$ no hay literales positivas y en  $C_j\setminus \{l_j\}$ sigue habiendo a lo más una literal positiva. Con lo que en la unión de ambos hay a lo más una.
+
+    Si se pudiese eliminar dos literales negativas podriamos hacer la unión con dos literales positivas y ahí estaría el contraejemplo, pero eso es imposible dada la definición de
+    resolvente. El hecho de que se permite a lo máximo una literal positva es lo que lo hace imposible.
+  \item Dé una definición de cláusula de Horn en el lenguaje que sólo tiene a los conectivos $\{\land,\to\}$ ?`Cómo se ven ahora las cláusulas de Horn, unitarias, positivas o negativas en caso de existir?
+
+    Sean $\vp$ y $\psi$ dos elementos cuales quiera de prop. Sabemos que $\vp \rightarrow \psi \equiv \neg \vp \lor \psi$. Entonces una implicación es una clausula con una liter negativa y una
+    positiva.
+
+    Una clausula no unitaria seria de la forma $\vp_1 \rightarrow \psi_1 \land \vp_2 \rightarrow \neg \psi_2 \and ...$ o $\vp_1 \land \vp_2 \land .. \vp_n\rightarrow \psi_1$
+    De esta última forma no nos preocupamos por que el lado derecho de la implicación sea negativo.
+
+    Para tener una clausula unitaria tenemos que meter algun atomo $\top$ o $\bot$. Pero aquí sale un problema:
+
+    Si usamos $\bot$ tenemos los siguientes casos:
+    $$ \bot\rightarrow \vp \equiv \top\lor \vp$$
+    $$ \vp\rightarrow \bot \equiv \neg \vp \lor \bot$$
+
+    Veamos los casos de $\top$:
+    $$ \top\rightarrow \vp \equiv \bot\lor \vp$$
+    $$ \vp\rightarrow \top \equiv \neg \vp \lor \top$$
+
+    Si no considramos las contantes como literales creo que acabamos de ver que puede haber constantes unitarias positivas y negativas.
+  \end{enumerate}
+  
+\medskip
+  
+\item Punto Extra ({\bf hasta 2 pts})  Sea $H$ un conjunto de cláusulas de Horn no positivas. Muestre que $H$ es satisfacible. ¿Es esto cierto si existen cláusulas positivas en $H$ ?
+
+  
+\end{enumerate}
+
+
+\end{document}

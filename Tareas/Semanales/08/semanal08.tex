@@ -1,0 +1,169 @@
+\documentclass[8pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{csquotes}
+\usepackage{multicol}
+
+\usepackage{qtree}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\newcommand{\m}{\mathcal{M} }
+\newcommand{\I}{\mathcal{I} }
+
+\title{%
+  Ejercicio Semanal 8\\
+  {\large{}}}
+\author{Diego Méndez Medina}
+\date{}
+\begin{document}
+\ttfamily
+\maketitle
+\rmfamily
+
+Decide si los siguientes argumentos lógicos son correctos o exhibe un
+contraejemplo mostrando paso a paso la prueba o la construcción del
+contraejemplo.
+\begin{enumerate}
+  %1
+\item $\exists x(P(x)\land Q(x)), \exists x(P(x)\land R(x)) /
+  \therefore \exists x(P(x)\land Q(x) \land R(x))$
+
+  El argumento es incorrecto si existe un modelo $\m$ tal que:
+  \begin{align*}
+    \m &\models \exists x(P(x)\land Q(x))\\
+    \m &\models\exists x(P(x)\land R(x))\\
+    \m &\not\models \exists x(P(x)\land Q(x) \land R(x))
+  \end{align*}
+  
+  Lo que ocurre si $\{\exists x(P(x)\land Q(x)),\ \exists x(P(x)\land R(x)),
+  \ \neg \exists x(P(x)\land Q(x) \land R(x))\}$ tiene un modelo. Construyamos
+  ese modelo:
+
+  \hfill\break
+  Sea $\m = <M, \I>$, tal que:
+  \begin{align*}
+    M &= \{a,b\} & P^\I &= \{a,b\}\\
+    Q^\I &= \{a\} & R^\I &= \{b\}
+  \end{align*}
+  
+  Antes de continuar hagamos una observación:
+  \begin{align*}
+    \neg \exists x(P(x)\land Q(x) \land R(x)) &\equiv
+    \forall x(\neg P(x)\lor \neg Q(x) \lor\neg R(x))
+  \end{align*}
+  Ahora, veremos que en efecto $\m$ es modelo de
+  $$\{\exists x(P(x)\land Q(x)),\
+  \exists x(P(x)\land R(x)),\
+  \forall x(\neg P(x)\lor \neg Q(x) \lor\neg R(x))\}$$
+
+  \hspace*{0.5cm}Dada nuestra $\m$ antes descrita, tenemos:
+  \begin{align*}
+    &1.\  & \I (\exists x(P(x)\land Q(x))) &= 1 & &\text{Pues } a \in P^\I
+    \text{y } a \in Q^\I\\
+    &2.\  & \I (\exists x(P(x)\land R(x))) &= 1 & &\text{Pues } b \in P^\I
+    \text{y } b \in R^\I\\
+    &3.\  & \I_{[x/a]}(\neg P(x)\lor \neg Q(x) \lor\neg R(x))) &= 1 &
+    &\text{Pues } a \notin R^\I\\
+    &4.\  & \I_{[x/b]}(\neg P(x)\lor \neg Q(x) \lor\neg R(x))) &= 1 &
+    &\text{Pues } b \notin Q^\I \\
+    &5.\  & \I( \forall x(\neg P(x)\lor \neg Q(x) \lor\neg R(x))\}) &= 1 &
+    &\text{Por $3$ y $4$}
+  \end{align*}
+  Así existe un modelo, $\m$, de las premisas unión la conclusión negada.
+  Con lo que el argumento dado no es correcto.
+  \newpage
+  %2
+\item $\forall x(G(x)\rightarrow H(x)), \forall x(H(x)\rightarrow F(x)),
+  G(a)/\therefore \exists x(G(x) \land F(x))$
+
+  \hfill\break
+  Sea $\m$ un modelo de $\{\forall x(G(x)\rightarrow H(x)),\ 
+  \forall x(H(x)\rightarrow F(x)),\ G(a)\}$, entonces:
+  \begin{align*}
+    \m &\models \forall x(G(x)\rightarrow H(x))\\
+    \m &\models \forall(x)(H(x)\rightarrow F(x))\\
+    \m &\models G(a)
+  \end{align*}
+  
+  Queremos ver que $\m \models \exists x(G(x) \land F(x))$.
+
+  \hfill\break
+  Sea $\chi$ un estado cualquiera. tenemos:
+  \begin{align*}
+    1.& & \I_\chi(\forall x(G(x)\rightarrow H(x))) &= 1 & &\text{Por
+      hipótesis}\\
+    2.& & \I_\chi(\forall x(H(x)\rightarrow F(x))) &= 1 & &\text{Por
+      hipótesis}\\
+    3.& & \I_\chi(G(a)) &= 1 & &\text{Por
+      hipótesis}\\
+    4.& & \I_{\chi[x/a]}(G(x)\rightarrow H(x)) &= 1 & &\text{Por $1$}\\
+    5.& & \I_\chi(H(a)) &= 1 & &\text{Por $3$ y $4$}\\
+    6.& & \I_{\chi[x/a]}(H(x)\rightarrow F(x)) &= 1 & &\text{Por $2$}\\
+    7.& & \I_\chi(F(a)) &= 1 & &\text{Por $5$ y $6$}\\
+    8.& & \I_{\chi}(G(a)\land F(a)) &= 1 & &\text{Por $3$ y $7$}\\
+    9.& & \I_{\chi [x/a]}(G(x)\land F(x)) &= 1 & &\text{Por $8$}\\
+    10.& & \I_\chi(\exists x(G(x) \land F(x))) &= 1 & &\text{Por $9$}
+  \end{align*}
+
+  Como $\chi$ era arbitrario, concluimos que
+  $\m \models \exists x(G(x) \land F(x))$, así el argumento es correcto.
+
+  \newpage
+  %3
+\item \textit{Los violinistas que tocan bien son músicos de alcurnia. Hay
+  algunos violinistas en la orquesta. Entonces algunos músicos son de
+  alcurnia}.\rmfamily $\ (V^{(1)}, T^{(1)}, A^{(1)}, M^{(1)}, O^{(1)})$
+
+  \hfill\break
+  Definimos los predicados:
+  \begin{align*}
+    V(x) &= x \text{ es violinista}\\
+    T(x) &= x \text{ toca bien}\\
+    A(x) &= x \text{ es de alcurnia}\\
+    M(x) &= x \text{ es músico}\\
+    O(x) &= x \text{ está en la orquesta}\\
+  \end{align*}
+  
+  Dados los predicados tenemos el siguiente argumento:
+  \begin{align*}
+    &\forall x(V(x)\land T(x)\rightarrow M(x)\land A(x)) \\
+    &\exists x(V(x)\land O(x))\\
+    &\text{\rule{4cm}{0.01cm}}\\
+    &\therefore \exists x(M(x)\rightarrow A(x))
+  \end{align*}
+
+  Observación:
+  \begin{align*}
+    \neg \exists x(M(x)\rightarrow A(x)) &\equiv \forall x(\neg(\neg M(x)\lor A(x)))\\
+    &\equiv \forall x(M(x)\land \neg A(x))\\
+  \end{align*}
+
+  Veremos que el argumento es incorrecto mostrando un modelo para
+  $$\Sigma = \{\forall x(V(x)\land T(x)\rightarrow M(x)\land A(x)),\
+  \exists x(V(x)\land O(x)),\ \forall x(M(x)\land \neg A(x))\}$$
+
+  Sea $\m = <Mundo, \I>$, tal que:
+  \begin{align*}
+    Mundo &= \{ Ziggy, Leo\} & V &= \{Ziggy\} & O &= \{Ziggy, Leo\}\\
+    T &= \emptyset & A &= \emptyset & M &= \{Ziggy, Leo\}
+  \end{align*}
+
+  Veamos que si satisfase a $\Sigma$:
+  \begin{align*}
+    \I(\forall x(V(x)\land T(x)\rightarrow M(x)\land A(x))) &= 1 &
+    &\text{Por vacuidad, pues ninguno toca bien}\\
+    \I(\exists x(V(x)\land O(x))) &= 1 & &\text{Pues $Ziggy\in V$ y
+      $Ziggy\in O$} \\
+    \I(\forall x(M(x)\land \neg A(x))) &= 1 & &\text{Pues
+      $Ziggy, Leo\in M$ y $Ziggy, Leo\notin A$}
+  \end{align*}
+  Mostramos un modelo que satisface a las premisas y a la conclusión negada,
+  con lo que el argumento es incorrecto.
+\end{enumerate}
+\end{document}
