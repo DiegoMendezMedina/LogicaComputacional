@@ -4,11 +4,10 @@ module DPLL where
 -- de lógica proposicional
 
 import LProp
-
-type Literal       = Prop
-type Clausula      = [Literal]
-type Modelo        = [Literal]
-type Formula       = [Clausula]
+type Literal = Prop
+type Clausula = [Literal]
+type Formula = [Clausula]
+type Modelo = [Literal]
 type Configuracion = (Modelo,Formula)
 
 --------------------------------------  BÚSQUEDA DE MÓDELOS HACIA ATRAS ------------------------------
@@ -222,7 +221,6 @@ contiene_literal_neg (x:xs) l
   | otherwise     = contiene_literal_neg xs l
 
 
-
 data ArbolDPLL = 
                  Void
                | Uni Formula ArbolDPLL
@@ -249,3 +247,4 @@ ejemplo_succes = success ([p, r, Neg q], [])
 ejemplo_rcu = rcu [[p, q, Neg r] , [p, Neg q] , [Neg p] , [r]]
 ejemplo_rlp = rlp [[p,q] , [q, r] , [Neg q, p] , [r, Neg q]]
 ejemplo_rd = rd [[Neg q, r] , [Neg r, q] , [Neg q, Neg r]]
+
