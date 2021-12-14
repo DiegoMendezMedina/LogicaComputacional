@@ -1,0 +1,329 @@
+\documentclass[8pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{csquotes}
+\usepackage{multicol}
+
+\usepackage{qtree}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\newcommand{\m}{\mathcal{M} }
+\newcommand{\I}{\mathcal{I} }
+
+\title{%
+  Ejercicio Semanal 10\\
+  {\large{}}}
+\author{Diego Méndez Medina}
+\date{}
+
+\begin{document}
+\ttfamily
+\maketitle
+\rmfamily
+
+\begin{enumerate}
+\item El calendario gregoriano dice que la tierra tarda $8,700$ horas en
+  rodear el sol, es decir $365\cdot 24$. Pero en realidad si lo contamos con
+  un crónometro un año en realidad dura $8,675$ horas, $48$ minutos y 46
+  segundos. Así que nuestro calendario se mueve un poco más rápido de lo que
+  cambian nuestras estaciones del año lo cuál ocasionaría que en algunos
+  años tuviéramos que celebrar navidad en medio del verano.
+
+  Sin embargo, aunque 365 días es menos de lo necesario para representar
+  de forma precisa un año, 366 son muchos más y eso aún implicaría
+  un movimiento del calendario pero hacia la otra dirección. La solución
+  para todo esto es el año bisiesto en donde Febrero tiene un día extra
+  pero sólo cada cuatro años para que el calendario vuelva a alinearse.
+
+  Sin embargo esto no soluciona completamente el problema, agregar
+  un día al año cada $4$ años hace que el calendario avance levemente
+  más lento de lo que debería. Lo que ocasiona que cada $100$ años el
+  calendario se atrase un día. Lo cual podría no paracer tan grave, excepto
+  que para Christopher Clavius que quería que todo se alineara perfectamente.
+  Para solucionarlo cada se siglo se omite el año bisiesto, es decir, los
+  años $1894$ y $1904$ fueron bisiestos pero $1900$ no.
+  
+  Pero aún hay un problema, el calendario ahora avanza ligeramente
+  más rápido, cada $400$ años el calendario se adelantaría un día. Por
+  esta razón si el siglo es divisible por $400$, entonces el año si es
+  bisiesto, es decir, los años $1900$ y $2100$ no son bisiestos pero el
+  $2000$ si lo fue.
+  
+  \begin{enumerate}
+  \item Formaliza la información necesaria para saber si un año
+    es bisiesto usando lógica de primer orden.
+
+    \hfill\break
+    Un año es bisiesto si cumple con lo siguiente:
+    \begin{itemize}
+    \item El año es divisible entre $4$.
+    \item El año es un siglo y es divisible entre $400$.
+    \end{itemize}
+
+    Creamos los predicados $D^2, B^1, S^1$:
+    \begin{align*}
+      Dxy&: \text{$x$ divide a $y$ dejando residuo cero} \\
+      Bx &: \text{$x$ es un año bisiesto}\\
+      Sx &: \text{$x$ es un siglo}\\
+    \end{align*}
+
+    Y la función $f^1$:
+
+    \begin{align*}
+      fx &: \text{el número que representa al año $x$}
+    \end{align*}
+    
+    Información necesaria para saber si es bisiesto:
+    \begin{align*}
+      \forall x((D4fx \land \neg Sx)\rightarrow Bx)\\
+      \forall x((D4fx \land Sx \land D(400,fx))\rightarrow Bx)
+    \end{align*}
+    \newpage
+    %b
+  \item Tradúcelo a un programa lógico.
+
+    \begin{align*}
+      (D4fx \land \neg Sx)\rightarrow Bx &\equiv \neg (D4fx \land \neg Sx)\lor Bx\\
+      &\equiv \neg D4fx \lor Sx\lor Bx\\
+      &\equiv \neg (D4fx) \lor (Sx\lor Bx)\\
+      &\equiv D4fx \rightarrow (Sx\lor Bx)\\
+      &\equiv (Sx\lor Bx)\leftarrow D4fx
+    \end{align*}
+
+    \begin{align*}
+      (D4fx \land Sx \land D(400,fx))\rightarrow Bx &\equiv \neg(D4fx \land Sx \land D(400,fx))\lor Bx\\
+      &\equiv \neg D4fx \lor\neg Sx \lor\neg D(400,fx)\lor Bx\\
+      &\equiv Bx\leftarrow(D4fx \land Sx \land D(400,fx))
+    \end{align*}
+
+    Entonces el programa $\mathbb{P}_B$, que nos indica si un año es bisiesto es:
+    
+    \begin{align*}
+      1.& & (Sx\lor Bx) &\leftarrow D4fx\\
+      2.& & Bx &\leftarrow(D4fx \land Sx \land D(400,fx))
+    \end{align*}
+    %c
+  \item Usando resolución verifica que $2000$ fue un
+    año bisiesto y que $1900$ no lo fue.
+
+    \begin{itemize}
+    \item[$2000$]
+
+      \hfill\break
+      $\mathbb{P}_B\models B2000?$
+      
+      \begin{align*}
+        1.& & (Sx\lor Bx) &\leftarrow D4fx & &\mathbb{P}_B\\
+        2.& & Bx &\leftarrow(D4fx \land Sx \land D(400,fx)) & &\mathbb{P}_B\\
+        3.& & S2000&\leftarrow  & &\text{Hecho, }100\cdot 20 = 2000\\
+        4.& & D4f2000&\leftarrow  & &\text{Hecho, } \ 4\cdot 500 = 2000\\
+        5.& & D400f2000&\leftarrow  & &\text{Hecho, } \ 400\cdot 5 = 2000\\
+        6.& & &\leftarrow  B2000 & &\text{Meta}\\
+        7.& & &\leftarrow(D4f2000 \land S2000 \land D(400,f2000)) & &res(2, 6, [x:=2000]))\\
+        8.& & &\leftarrow(D4f2000 \land D(400,f2000)) & &res(3, 7, []))\\
+        9.& & &\leftarrow D(400,f2000) & &res(4, 8, []))\\
+        10& & &\leftarrow   & &res(5, 9, []))\\
+      \end{align*}
+
+      Llegamos a la vacía, entonces $2000$ si fue par.
+      \newpage
+    \item[$1900$]
+      
+      \hfill\break
+      $\mathbb{P}_B\models B1900?$
+      \begin{align*}
+        1.& & (Sx\lor Bx) &\leftarrow D4fx & &\mathbb{P}_B\\
+        2.& & Bx &\leftarrow(D4fx \land Sx \land D(400,fx)) & &\mathbb{P}_B\\
+        3.& & S1900&\leftarrow   & &\text{Hecho}\\
+        4.& & D4f1900&\leftarrow  & &\text{Hecho}\\
+        5.& & &\leftarrow D400f1900  & &\text{Hecho}\\
+        6.& & &\leftarrow  B1900 & &\text{Meta}\\
+        & &&\text{ Hay dos caminos, comenzamos con el primero:}\\
+        7'.& & &\leftarrow(D4f1900 \land S1900 \land D(400,f1999)) & &res(2, 6, [x:=1900]))\\
+        8'.& & &\leftarrow(D4f1900 \land D(400,f1999)) & &res(3, 7', []))\\
+        9'.& & &\leftarrow D(400,f1999) & &res(4, 8', []))\\
+        & &&\text{No se puede hacer nada, pasamos al segundo:}\\
+        7''.& & S1900 &\leftarrow D4f1900 & &res(1, 6, [x:=1900]))\\
+        8''.& & S1900 &\leftarrow  & &res(4, 7'', [x:=1900]))\\
+      \end{align*}
+
+      Hicimos ambos caminos y en ninguno llegamos a la resolución, entonces
+      $1900$ no fue bisiesto.
+    \end{itemize}
+  \end{enumerate}
+    \newpage
+    % 2
+  \item El periodo de órbita de cada planeta del sistema solar respecto al de la tierra es el siguiente:
+
+    \begin{table}[h]
+      \begin{center}
+        \begin{tabular}{| c | c |}
+          \hline
+          \textbf{Planeta} & \textbf{Periodo orbital en años Tierra} \\ \hline
+          Mercurio & 0.2408467\\\hline
+          Venus & 0.61519726\\\hline
+          Tierra & 1.0\\\hline
+          Marte & 1.8808158\\\hline
+          Júpiter & 11.862615\\\hline
+          Saturno & 29.447498\\\hline
+          Urano & 84.016846\\\hline
+          Neptuno & 164.79132\\\hline
+        \end{tabular}
+      \end{center} 
+    \end{table}
+
+    Y un año en la Tierra tiene $31, 557, 600$ segundos. De esta forma
+    si una persona tiene $1, 000, 000, 000$ segundos de vida, entonces
+    tiene $31.69$ años en la Tierra y tiene $131.57$ años en Mercurio.
+
+    \begin{enumerate}
+    \item Traduce la información anterior a lógica de primer orden.
+
+      \hfill\break
+      Dada la tabla tenemos las siguientes constantes/funciones, todas
+      con indice cero:
+
+      \begin{align*}
+        mercurio^0 &= 0.2408467 & venus^0 &= 0.61519726 & tierra^0&=1\\
+        marte^0&=1.8808158 & jupiter^0&=11.862615  & saturno^0 &=29.447498\\
+        urano^0&=84.016846 &  neptuno^0 &= 164.79132
+      \end{align*}
+
+      Y tenemos los siguientes predicados:
+
+      \begin{align*}
+        Tierra(x,y) &: x = y\cdot 31,557,600 & A(x) &:
+        \text{x son años en la Tierra}
+        & S(x) &: \text{x son segundos en la Tierra}\\
+        div(x,y,z) &: z = x/y \\
+      \end{align*}
+
+      \begin{align*}
+        Mercurio(x, y) &: \text{$x$ años en la Tierra son $y$ años en Mercurio}\\
+        % venus Le preseta a mama 500, 215, 
+        Venus(x, y) &: \text{$x$ años en la Tierra son $y$ años en Venus}\\
+        % Marte
+        Marte(x, y) &: \text{$x$ años en la Tierra son $y$ años en Marte}\\
+        % jupiter
+        Jupiter(x, y) &: \text{$x$ años en la Tierra son $y$ años en Jupiter}\\
+        % Saturno
+        Saturno(x, y) &: \text{$x$ años en la Tierra son $y$ años en Saturno}\\
+        % Urano
+        Urano(x, y) &: \text{$x$ años en la Tierra son $y$ años en Urano}\\
+        % Neptuno
+        Neptuno(x, y) &: \text{$x$ años en la Tierra son $y$ años en Neptuno}\\
+      \end{align*}
+      Traduciendo la información anterior a lógica de primer orden:
+
+      \begin{align*}
+        \forall x.A \exists y.S\ Tierra (x, y) \\
+        % mercurio
+        \forall t.A\exists y\exists m(Tierra (t, y) \land div(t, mercurio(), m)
+        &\rightarrow Mercurio(m, t))\\
+        % venus
+        \forall t.A\exists y\exists v(Tierra (t, y) \land div(t, venus(), v)
+        &\rightarrow Venus(v, t))\\
+        % Marte
+        \forall t.A\exists y\exists m(Tierra (t, y) \land div(t, marte(), m)
+        &\rightarrow Marte(m, t))\\
+        % jupiter
+        \forall t.A\exists y\exists j(Tierra (t, y) \land div(t, jupiter(), j)
+        &\rightarrow Jupiter(j, t))\\
+        % Saturno
+        \forall t.A\exists y\exists s(Tierra (t, y) \land div(t, saturno(), s)
+        &\rightarrow Saturno(s, t))\\
+        % Urano
+        \forall t.A\exists y\exists u(Tierra (t, y) \land div(t, urano(), u)
+        &\rightarrow Urano(u, t))\\
+        % Neptuno
+        \forall t.A\exists y\exists n(Tierra (t, y) \land div(t, neptuno(), n)
+        &\rightarrow Neptuno(n, t))\\
+      \end{align*}
+      % b
+    \item Define con ella un programa lógico.
+
+      \hfill\break
+      Tenemos el programa $\mathbb{P}_A$ que nos indica nuestra edad
+      en otro planeta del sistema solar, dada la nuestra en la tierra:
+
+      \begin{align*}
+        1. & & Tierra (x, y)&\leftarrow \\
+        % mercurio
+        2.& & Mercurio(m, t)&\leftarrow(Tierra (t, y) \land div(t, mercurio(), m)\\
+        % venus
+        3.& & Venus(m, t)&\leftarrow(Tierra (t, y) \land div(t, venus(), v)\\
+        % Marte
+        4.& & Marte(m, t)&\leftarrow(Tierra (t, y) \land div(t, marte(), m)\\
+        % jupiter
+        5.& &Jupiter(m, t)&\leftarrow(Tierra (t, y) \land div(t, jupiter(), j)\\
+        % Saturno
+        6.& & Saturno(m, t)&\leftarrow(Tierra (t, y) \land div(t, saturno(), s)\\
+        % Urano
+        7.& & Urano(m, t)&\leftarrow(Tierra (t, y) \land div(t, urano(), u)\\
+        % Neptuno
+        8.& & Neptuno(m, t)&\leftarrow(Tierra (t, y) \land div(t, neptuno(), n)
+      \end{align*}
+      %c
+    \item Usando resolución calcula tu edad en Júpiter.
+
+      \hfill\break
+      Antes de mostrar la ejecución del programa hay que hacer observación
+      de algunas cosas.
+
+      Nací el 31 de marzo del 2000, pero para fines del ejercicio vamos a
+      asumir que tengo 21 años exactos, entonces:
+
+      \begin{align*}
+        mi\_edad\_jupiter &= 21/11.862615 & segundos\_en\_Tierra &= 21\cdot
+        31, 557, 600\\
+        &= 1.7702673483 & &= 662709600
+      \end{align*}
+      
+      Y por ultimo:
+
+      \begin{align*}
+       z = 21/11.862615 \leftrightarrow z = 1.7702673483
+      \end{align*}
+      \newpage
+      $\mathbb{P}_A\models Jupiter(21, 1.7702673483)?$
+
+      \begin{align*}
+        1. & & Tierra (x, y)&\leftarrow & &\mathbb{P}_A\\
+        % mercurio
+        2.& & Mercurio(m, t)&\leftarrow(Tierra (t, y) \land div(t, mercurio(), m) & &\mathbb{P}_A\\
+        % venus
+        3.& & Venus(m, t)&\leftarrow(Tierra (t, y) \land div(t, venus(), v) & &\mathbb{P}_A\\
+        % Marte
+        4.& & Marte(m, t)&\leftarrow(Tierra (t, y) \land div(t, marte(), m) & &\mathbb{P}_A\\
+        % jupiter
+        5.& &Jupiter(m, t)&\leftarrow(Tierra (t, y) \land div(t, jupiter(), j) & &\mathbb{P}_A\\
+        % Saturno
+        6.& & Saturno(m, t)&\leftarrow(Tierra (t, y) \land div(t, saturno(), s)
+        & &\mathbb{P}_A\\
+        % Urano
+        7.& & Urano(m, t)&\leftarrow(Tierra (t, y) \land div(t, urano(), u)
+         & &\mathbb{P}_A\\
+        % Neptuno
+        8.& & Neptuno(m, t)&\leftarrow(Tierra (t, y) \land div(t, neptuno(), n)
+        & &\mathbb{P}_A\\
+        % Hechos
+        9.& &div(21, 11.862615, 1.7702673483)&\leftarrow & &\text{Hecho}\\
+        10.& &&\leftarrow  Jupiter(21, 1.7702673483)& &\text{Meta}\\
+        % Ejecución
+        11.& &Jupiter(21, 1.7702673483)&\leftarrow Tierra (21, y)
+        & &res(5, 9, [t, j:= 21\\
+          & & & & & ,\ 1.7702673483])\\
+        12.& &Jupiter(21, 1.7702673483)&\leftarrow &
+        &res(1, 11, [x:=21])\\
+        13.& &&\leftarrow &
+        &res(10, 12, [])
+      \end{align*}
+    \end{enumerate}
+\end{enumerate}
+\end{document}
