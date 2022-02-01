@@ -1,0 +1,313 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=2cm,includefoot]{geometry}
+\usepackage[spanish]{babel}
+
+\usepackage{csquotes}
+\usepackage{multicol}
+
+\usepackage{qtree}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{multicol}
+
+\graphicspath{ {images/} }
+\newcommand{\coso}{\mathbin{\rotatebox[origin=c]{270}{$\perp$}}}
+
+\input{../01/macroslc}
+\usepackage{graphicx}
+
+\title{Tarea Examen 4}
+\author{Diego Méndez Medina}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+  %% 01
+\item {\bf (2.5pts.)} Considere los siguientes programas funcionales acerca de listas:
+\begin{verbatim}
+    lg [] = 0                    dupl [] = []
+    lg (x:xs) = 1 + lg xs        dupl (x:xs) = (x:(x: dup xs))
+\end{verbatim}
+Defina un conjunto adecuado de ecuaciones $E$ y construya una {\bf derivación formal} en lógica ecuacional del secuente \[ E\vdash {\tt lg\; (dupl\; \ell) = 2*(lg\; \ell)}. \] Puede usar las reglas de cálculo de Birkhoff o bien las reglas de reescritura ({\sc rewrite}).
+
+Recuerde que todas las variables en ecuaciones están implícitamente cuantificadas universalmente por lo que la prueba del secuente requiere usar inducción, es decir, primero derive el secuente para 
+$\ell=_{def}[\;]$ y posteriormente para $\ell=_{def}(x:xs)$ agregando la correspondiente hipótesis de inducción al contexto $E$. Es recomendable hacer la inducción de manera informal primero para así identificar con exactitud todas las ecuaciones que deben figurar en $E$. 
+
+\hfill\break
+{\bf Solución:}
+
+% Caso base
+Comencemos con el caso base, para este caso tomamos $E$ como las propiedades
+elementales de las litas y números naturales, tambíen la definición de las
+funciones $lg$ y $dupl$. De acuerdo a sus definiciones tenemos lo siguiente:
+
+\begin{align*}
+  1.& & E&\coso dupl([\:]) = [\;] & &\text{REFL.}\\
+  2.& & E&\coso lg([\:]) = 0 & &\text{REFL.}\\
+  3.& & E&\coso 2* 0=0 & &\text{REFL.}\\
+  4.& & E&\coso lg(dupl([\;])) = lg([\;]) & &\text{CONGR.}\; lg\;(1) \\\
+  5.& & E&\coso lg([\;]) = 2*lg([\;]) & &\text{TRANS. } 2,3\\
+  6.& & E&\coso lg(dupl([\;])) = 2*lg([\;]) & &\text{TRANS. } 4,5\\
+\end{align*}
+
+Entonces para $\ell = [\;]$ se cumple $E\coso lg(dupl([\ell])) = 2*lg([\ell])$
+
+\hfill\break
+Para hacer el paso inductivo es decir que $\ell = (x:xs)$,en la base de
+conocimiento $E$ necesitamos saber que para la cadena $xs$
+se cumple la propiedad deseada. Entonces sea $lg(\ell) = n$, para este
+caso especifico solo necesitamos que se cumpla para $xs$, pero como no
+sabemos quien sea en $E$ ahora se encuentra:
+
+$$ \forall y(lg(y)=n-1\rightarrow lg(dupl(y)) = 2*lg(y))$$
+
+Entonces se cumple para toda cadena de longitud $n-1$, ahora demostraremos que
+$E\coso lg(dupl(\ell)) = 2*(lg\;\ell)$.
+
+\begin{align*}
+  1.& & E&\coso dupl((x:xs)) = (x:(x: dupl\;xs)) & &\text{REFL.}\\
+  2.& & E&\coso lg(dupl(xs)) = 2*lg(xs) & &\text{REFL.}\\
+  %4.& & E&\coso lg(dupl(x:xs)) = 2*(1+lg\; xs) & &\text{REFL.}\\
+  3.& & E&\coso lg((x:(x: dupl\;xs))) = 2+lg(dupl\;xs) & &\text{REFL.}\\
+  4.& & E&\coso lg(dupl((x:xs))) =lg((x:(x: dupl\;xs)))
+  & &\text{CONGR. }(3),(1)\\
+  5.& & E&\coso lg(dupl((x:xs))) = 2+lg(dupl\;xs)  &
+  &\text{TRANS } (3),(4)\\
+  6.& & E&\coso 2*(\;lg(x:xs)) = 2*(1+lg\;xs) & &\text{Def. } lg\\
+  7.& & E&\coso 2*(1+lg\;xs)=2+2*lg\;xs & &\text{Distributividad de }* \\
+  8.& & E&\coso 2*(\;lg(x:xs))=2+2*lg\;xs & &\text{TRANS.} (6) (7) \\
+  9.& & E&\coso 2*(\;lg(x:xs))=2+lg(dupl(xs)) & &\text{CONGR.} +\; (2)(8) \\
+  10.& & E&\coso 2+lg(dupl(xs))=2*(\;lg(x:xs)) & &\text{SYM.}(9) \\
+  11.& & E&\coso lg(dupl((x:xs)))=2*(\;lg(x:xs)) & &\text{TRANS} +\; (5)(1= \\
+\end{align*}
+
+Como $n$ era arbitraría, al igual que el elemento $x$. Probamos que se
+cumple para de longitud 0. Que se cumpla
+para todas las cadenas de longitud $n-1$ implica que tambíen
+se cumpla para las de $n$. Con una base de conocimiento $E$ definida
+como lo fue a lo largo del ejercicio concluimos:
+
+$$E\coso lg(dupl(\ell)) = 2*(lg\;\ell)$$.
+
+%% 02
+\item \textbf{(2.5pts.)} Demuestra los siguientes argumentos utilizando las reglas del cálculo de secuentes. 
+  Si fuera necesaria alguna demostración adicional debes justificarla.
+
+\begin{enumerate}
+  %% 2.a
+\item $\ex x Qx, \;\fa x (Qx \land \ex y Py \to Qfx),\;\fa z(Qz\to Qgz)
+  \vdash Pb \to \ex w Qgfw$.
+
+  \hfill\break
+  {\bf Solución:}
+
+  \begin{align*}
+    1.& & P(b),\, Q(x),\, Q(g(f(u)),\, P(v) \rightarrow Q(f(g(h(u)))),\,
+    \forall z (Q(z)\rightarrow Q(g(z)) &\coso Q(g(f(u))) & &\text{HIP.}\\
+    2.& & P(b),\, Q(x),\, Q(g(f(u)),\, \exists yP(y) \rightarrow Q(f(g(h(u)))),
+    \,\forall z (Q(z)\rightarrow Q(g(z)) &\coso Q(g(f(u))) & &\exists\ I\\
+    3.& & P(b),\,\exists x Q(x),\, Q(g(f(u)),\, \exists yP(y) \rightarrow Q(f(g(h(u)))),
+    \,\forall z (Q(z)\rightarrow Q(g(z)) &\coso Q(g(f(u))) & &\exists\ I\\
+    4.& & P(b),\,\exists x Q(x),\, Q(g(f(u))\land \exists yP(y) \rightarrow Q(f(g(h(u)))),
+    \,\forall z (Q(z)\rightarrow Q(g(z)) &\coso Q(g(f(u))) & &\land\ I\\
+    5.& & P(b),\,\exists x Q(x),\,\forall x Q(x)\land \exists yP(y) \rightarrow Q(f(x)),
+    \,\forall z (Q(z)\rightarrow Q(g(z)) &\coso Q(g(f(u))) & &\forall\ I\\
+    6.& & P(b),\,\exists x Q(x),\,\forall x Q(x)\land \exists yP(y) \rightarrow Q(f(x)),
+    \,\forall z (Q(z)\rightarrow Q(g(z)) &\coso \exists w Q(g(f(w))) & &\forall\ I\\
+    7.& & \exists x Q(x),\,\forall x Q(x)\land \exists yP(y) \rightarrow Q(f(x)),
+    \,\forall z (Q(z)\rightarrow Q(g(z)) &\coso P(b) \rightarrow \exists w Q(g(f(w))) & &\rightarrow R\\
+  \end{align*}
+  %% 2.b
+\item $\forall x\exists y(Px \imp Rxy) \vdash \forall y(Py \imp\exists x Ryx)$
+
+  \hfill\break
+  {\bf Solución:}
+
+  \begin{align*}
+    1.& & Px &\coso Px & &\text{HIP.}\\
+    2.& & Ryz &\coso Ryz & &\text{HIP.}\\
+    3.& & Px\rightarrow Ryz,\, Py &\coso Ryz & &\rightarrow L\\
+    4.& & Px\rightarrow Ryz,\, Py &\coso \exists x Ryx & &\exists R\ 3\\
+    5.& & \exists z(Px\rightarrow Ryz),\, Py &\coso \exists x Ryx
+    & &\exists L\ 4\\
+    6.& & \forall x\exists z(Px\rightarrow Ryz),\, Py
+    &\coso \exists x Ryx & &\forall L\ 5\\
+    7.& & \forall x\exists z(Px\rightarrow Ryz) &\coso
+    Py\rightarrow \exists x Ryx & &\forall L\ 6\\
+    8.& & \forall x\exists z(Px\rightarrow Ryz) &\coso
+    \forall y(Py\rightarrow \exists x Ryx) & &\forall R\ 7\\
+  \end{align*}
+\end{enumerate}
+
+%% 03
+\item \textbf{(2.5pts.)} Deriva los siguientes secuentes respetando el nivel de negación indicado y usando exclusivamente las reglas de inferencia para negación de cada sistema:
+  \be
+  % 3.a
+\item $\vdash_m \neg\neg\neg A\to \neg A$
+  
+  \hfill\break
+  {\bf Solución}
+
+  \begin{align*}
+    1.& & \neg\neg\neg A, A &\coso \neg\neg \neg A & &\text{HIP.}\\
+    2.& & \neg\neg\neg A, A, \neg A &\coso \neg  A & &\text{HIP.}\\
+    3.& & \neg\neg\neg A, A, \neg A &\coso   A & &\text{HIP.}\\
+    4.& & \neg\neg\neg A, A, \neg A &\coso   \bot & &def. \neg\ 2,3\\
+    5.& & \neg\neg\neg A, A &\coso \neg \neg A & &def.\neg\ 4\\
+    6.& & \neg\neg\neg A, A &\coso \bot & &def.\neg\ 1,4\\
+    7.& & \neg\neg\neg A &\coso \neg A & &def.\neg\ 6\\
+    8.& & &\coso \neg\neg\neg A \rightarrow \neg A & &\rightarrow\ I\ 7\\
+  \end{align*}
+  % 3.b
+\item $\vdash_i \neg A \lor B\to A\to B$
+
+  \hfill\break
+  {\bf Solución}
+  \begin{align*}
+    1.& & \neg A, A&\coso A & &\text{HIP.}\\
+    2.& & \neg A, A&\coso \neg A & &\text{HIP.}\\
+    3.& & \neg A, A&\coso B & &\text{$\bot$ E}\ 1,2\\
+    4.& & B, A&\coso B & &\text{HIP.}\\
+    5.& & \neg A\lor B, A&\coso B & &\lor L\ 3,4\\
+    6.& & \neg A\lor B&\coso A\rightarrow B & &\rightarrow R\ 5\\
+    7.& & &\coso\neg A\lor B\rightarrow A\rightarrow B & &\rightarrow R\ 6\\    
+  \end{align*}
+  % 3.c
+\item $\vdash_c (\neg A \to B) \to (\neg B\to A)$
+
+  \hfill\break  
+  {\bf Solución:}
+
+  \begin{align*}
+    1.& & A&\coso \bot & &\text{HIP.}\\
+    2.& & &\coso \neg A & &\neg I\; 1\\
+    3.& & B, \bot&\coso A & &\text{HIP.}\\
+    4.& & B, \neg B&\coso A & &\text{A} \; 3\\
+    5.& & B &\coso \neg B \rightarrow A & &\rightarrow R\; 4\\
+    6.& & \bot \rightarrow B &\coso \neg A & &\rightarrow I\; 2\\
+    7.& & \neg A \rightarrow B &\coso \neg B\rightarrow A & &\rightarrow I\; 6\\
+    8.& & &\coso\neg A \rightarrow B \rightarrow \neg B\rightarrow A
+    & &\rightarrow R\; 7\\
+  \end{align*}
+\ee  
+
+%% 04
+\item \textbf{(2.5pts.)} Muestre lo siguiente mediante una derivación por 
+tácticas, indica en cada paso la táctica usada.
+\begin{enumerate}
+  %% 4.a
+ \item $H_1: \exists x Fx \lor \exists x Gx 
+  \vdash \forall x (Fx \to Gx) \to \exists x Gx $
+
+  \hfill\break
+  {\bf Solución:}
+  
+  \begin{align*}
+    1.& & H: \exists x Fx \lor \exists x Gx,\, H_0:\forall x (Fx \to Gx)
+    &\coso \exists x Gx & &\text{intros}\\
+    2.& & H': \exists x Fx\coso \exists x Gx,\, H'': \exists x Gx\, H_0:\forall x (Fx \to Gx)
+    &\coso \exists x Gx & &\text{destruct } H\\
+    3.& & H': Fx\coso \exists x Gx,\, H'': \exists x Gx,\, H_0:\forall x (Fx \to Gx)
+    &\coso \exists x Gx & &\text{destruct } H'\\
+    4.& & H': Fx\coso Gx,\, H'': \exists x Gx,\, H_0:\forall x (Fx \to Gx)
+    &\coso \exists x Gx & &\text{exists } x\\
+    5.& & H': Fx\coso Fx,\, H'': \exists x Gx,\, H_0:\forall x (Fx \to Gx)
+    &\coso \exists x Gx & &\text{apply } H_0\\
+    6.& & \, H'': \exists x Gx,\, H_0:\forall x (Fx \to Gx)
+    &\coso \exists x Gx & &\text{apply } H'\\
+    7.& & \, H'': Gx,\, H_0:\forall x (Fx \to Gx)
+    &\coso \exists x Gx & &\text{destruct } H''\\
+    8.& & \, H'': Gx,\, H_0:\forall x (Fx \to Gx)
+    &\coso Gx & &\text{exists } x\\
+    9.& & \, &\square & &\text{apply } H''\\
+  \end{align*}
+  \newpage
+  %% 4.b
+ \item $H_1: \forall x(Px\lor Qx\imp\lnot Rx), \; H_2:\forall x(Sx \imp Rx)
+  \vdash\forall x(Px \imp\lnot Sx\lor Tx)$
+  
+  \hfill\break
+  {\bf Solución:}
+
+  \begin{align*}
+    1.& & &\coso Px \imp\lnot Sx\lor Tx & \\
+    2.& & H_2:Px &\coso \lnot Sx\lor Tx & &\text{intro}\\
+    3.& & H_2:Px &\coso \lnot Sx & &\text{left}\\
+    4.& & H_2:Px &\coso Px\lor Qx;\;H_2:Px \coso \lnot Sx &
+    &\text{assert}\ Px\lor Qx\\
+    5.& & H_2:Px &\coso Px;\;H_2:Px \coso \lnot Sx &
+    &\text{left}\\
+    6.& & H_2:Px\lor Qx &\coso \lnot Sx &
+    &\text{assumption}\\
+    7.& & H_1: Px\lor Qx\imp\lnot Rx,\,H_2:Px\lor Qx &\coso \lnot Sx &
+    &\text{intro}\\
+    8.& & H_1: Px\lor Qx\imp\lnot Rx\, H_2:Px\lor Qx &\coso \lnot Sx,\,
+    H_3: Px\lor Qx\imp\lnot Rx\coso \lnot Rx &
+    &\text{assert}\ \lnot Rx\\
+    9.& & H_1: Px\lor Qx\imp\lnot Rx\, H_2:Px\lor Qx &\coso \lnot Sx,\,
+    H_3: Px\lor Qx\imp\lnot Rx\coso Px\lor Qx &
+    &\text{apply}\ H_2\\
+    10.& & H_1: Px\lor Qx\imp\lnot Rx\, H_2:Px\lor Qx &\coso \lnot Sx,\,
+    H_3: Px\lor Qx\imp\lnot Rx\coso \lnot Rx&
+    &\text{assumption}\\
+    11.& & H_1: Px\lor Qx\imp\lnot Rx\, H_2:Px\lor Qx &\coso \lnot Sx,\,
+    H_3: ...\coso \lnot Rx,\,
+    H_4: Sx\coso \bot & &\text{intro}\\
+    12.& & H_1: Px\lor Qx\imp\lnot Rx\, H_2:Px\lor Qx &\coso \lnot Sx,\,
+    H_3: ...\coso \lnot Rx,\,
+    H_4: Sx\coso \bot,\, H_5: \coso Rx & &\text{apply} H_3\\
+    13.& & H_1: Px\lor Qx\imp\lnot Rx\, H_2:Px\lor Qx &\coso \lnot Sx,\,
+    H_3: ...\coso \lnot Rx,\,
+    H_4: Sx\coso \bot,\, H_5: \coso Sx & &\text{apply} H_2\\
+    14.& & &\square & &\text{assumption}\\
+  \end{align*}
+\end{enumerate}
+
+%% EXTRA
+\item \textbf{(Extra, hasta 3 pts.)} Derive el siguiente secuente ya sea 
+usando cálculo de secuentes o tácticas, justificando cada paso de la 
+derivación correspondiente (mencione el nivel de negación usado y por qué prefiere el método utilizado.):
+
+$$(C\to M) \to (N\to P),(C\to N) \to (N\to M),\;(C\to P) \to \neg M,\;\;C\to N\;\;\;\vdash\; \neg C$$ 
+
+LA SIGUIENTE SI LA HICE.
+
+LA SIGUIENTE SI LA HICE.
+
+LA SIGUIENTE SI LA HICE.
+
+LA SIGUIENTE SI LA HICE.
+\newpage
+\item (\textbf{Rescate del parcial 3 (hasta 2 puntos}) Considera el siguiente programa lógico:
+\begin{verbatim}
+1. r(g(X)) :- t(X,Y,f(X)).
+2. t(a,b,f(a)).
+3. q(V,W) :- r(V).    
+\end{verbatim}
+\begin{enumerate}
+\item Obtén una respuesta para la meta {\tt?- q(U,b).}  mostrando el árbol SLD.
+
+  \begin{center}
+    \includegraphics[scale=0.25]{E1}
+  \end{center}
+\item Muestra el árbol de búsqueda para la meta {\tt ?- t(a,W,f(V))}.
+
+    \begin{center}
+      \includegraphics[scale=0.12]{E2}
+    \end{center}
+\end{enumerate}
+
+\end{enumerate}
+
+
+\end{document}
