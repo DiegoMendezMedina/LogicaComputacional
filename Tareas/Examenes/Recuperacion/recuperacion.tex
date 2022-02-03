@@ -101,12 +101,198 @@ suplan la del semanal.
     %% 02.b
   \item Decide si el argumento es correcto o no. Indica qué método
     vas a utilizar para decidirlo.
+
+    Vamos a resolver con resolución binaria.
+    Pasando el argumento a forma normal conjuntiva:
+    \begin{itemize}
+    \item[] $fnc(p\rightarrow q) = \neg p\lor q$
+    \item[] $fnc(\neg q\lor r) = \neg q\lor r$
+    \item[] $fnc(\neg(s\rightarrow r)) = \neg(\neg s\lor r) = s\land \neg r$
+    \item[] $fnc(\neg s\rightarrow (q\land t)) \equiv s\lor (q\land t)
+      = (s\land q) \lor (s\land t)$
+    \item[] $fnc(\neg t) = \neg t$\\
+      \rule{.3\textwidth}{0.2mm}
+    \item[] $\therefore \neg p$
+    \end{itemize}
   \end{enumerate}
 
+  Sea $\sigma = \{\neg p\lor q,\neg q\lor r,s\land \neg r,
+  (s\land q) \lor (s\land t), \neg t\}$,
+  las premisas del argumento dado, queremos ver si:
+  $$ \sigma \models \neg p$$
+
+  Basta demostrar que $\sigma\cup \{p\}$ es insatisfasible. Procedemos
+  a hacerlo:
+  \begin{align*}
+    1.&\  \neg p\lor q& &\text{Hip.} \\
+    2.&\ \neg q\lor r& &\text{Hip.}\\
+    3.&\  s\land \neg r& &\text{Hip.}\\
+    4.&\  (s\land q) \lor (s\land t)& &\text{Hip.}\\
+    5.&\ \neg t & &\text{Hip.}\\
+    6.&\ p & &\text{Hip.}\\
+    7.&\ s\land q & &\text{Res}(4,5)\\
+    8.&\ \neg r & &\text{Por 3.}\\
+    9.&\ q & &\text{Por 7.}\\
+    10.&\ r& &\text{Res}(2,9)\\
+    11.&\ \square& &\text{Res}(8,10)\\
+  \end{align*}
   %% 04
-\item[4.]
+\item[4.] Considera la siguiente fórmula $A$:
+  $$ A =_{def} (\forall x\exists z(\neg P(x) \rightarrow T(y, z))[y := a][z := x]
+  \land \forall v(\exists xR(v, x, y) \land P(x)))[x, y := f(w), g(v)]$$
+  \begin{enumerate}
+  \item Determina el alcance de cada uno de los cuantificadores de
+    $A$ antes de realizar las sustituciones.
+
+    Los cuantificadores $\forall x\exists z$
+    tienen como alcance $\neg P(x) \rightarrow T(y, z)$.
+
+    El cuantificador $\forall v$ tiene como alcance
+    $\exists xR(v, x, y) \land P(x)$.
+
+    Por último el cuantificador $\exists x$ tiene como
+    alcance $R(v, x, y)$.
+  \item Obtén el conjunto de variables libres de $A$ antes de realizar
+    las sustituciones.
+
+    $y$ figura libre en $\neg P(x) \rightarrow T(y, z)$.
+
+    $y$ figura libre tambíen en $R(v, x, y)$.
+
+    $x$ figura libre en $P(x)$.
+
+    $$FV(A) = \{y,x\}$$
+  \item Realiza las sustituciones indicadas para obtener una fórmula $B$,
+    indicando explícitamente los pasos realizados de acuerdo al algoritmo
+    de sustitución visto en clase.
+
+    \begin{align*}
+      \forall x\exists z(\neg P(x) \rightarrow T(y, z))[y := a][z := x]
+      \land \forall v(\exists xR(v, x, y) \land P(x))[x, y := f(w), g(v)]
+      &\equiv_\alpha\\
+      \forall x\exists w(\neg P(x) \rightarrow T(y, w))[y := a][z := x]
+      \land \forall v(\exists uR(v, u, y) \land P(x))[x, y := f(w), g(v)]
+      &\equiv\\
+      \forall x\exists w(\neg P(x)[y := a][z := x]
+      \rightarrow T(y, w)[y := a][z := x])
+      \land \forall v(\exists uR(v, u, y) \land P(x))[x, y := f(w), g(v)]
+      &\equiv\\
+      \forall x\exists w(\neg P(x)
+      \rightarrow T(a, w))
+      \land \forall v(\exists uR(v, u, y)[x, y := f(w), g(v)]
+      \land P(x)[x, y := f(w), g(v)])
+      &\equiv\\
+      \forall x\exists w(\neg P(x)
+      \rightarrow T(a, w))
+      \land \forall v(\exists uR(v, u, g(v))
+      \land P(f(w))
+    \end{align*}
+  \item Construye el árbol de sintaxis abstracta de la expresión $B$
+    resultante del inciso anterior.
+    \Tree[.$\land$ [
+        [.$\forall x$ [.$\exists w$ [.$\rightarrow$ [.$\neg$ [.$P(x)$ ]]
+              [.$T(a,w)$ ]]]]
+            [.$\forall v$ [.$\land$ [.$\exists u$ [.$R(v,u,g(v))$ ]][.$P(f(w))$ ]]]]]
+  \end{enumerate}
   %% 05
-\item[5.]
+\item[5.] Sea $\mathcal{I} = \{P^(3), Q^(2), f^(1)\}$ y $\mathcal{M} =
+  <M, \mathcal{I}>$ donde $M = \{a, b, c\}$ y
+  \begin{align*}
+  P^\mathcal{I} &= \{(a, a, a),(b, b, b),(b, a, b)\}\\
+  Q^\mathcal{I} &= \{(a, a),(b, c),(c, a)\}\\
+  f^\mathcal{I}(a) &= a, f^\mathcal{I}(b) = c, f^\mathcal{I}(c) = a
+  \end{align*}
+
+  \begin{enumerate}
+  \item Decide si $\mathcal{M} \models_\sigma \forall x(Qxfx \land \exists x
+    (P ayfx \lor P byfx))$ donde $\sigma(y) = a$
+
+    Lo que em realidad queremos ver es si:
+    \begin{align*}
+      \mathcal{M} &\models \forall x(Qxfx \land \exists x
+      (P aafx \lor P bafx))\\
+      \mathcal{M} &\models \forall x (Qxfx \land \exists y
+      (P aafy \lor P bafy))\\
+      \mathcal{M} &\models \forall x Qxfx \land \exists y
+      (P aafy \lor P bafy)\\
+    \end{align*}
+    Primero veremos que
+    $$ \mathcal{M} \models \forall x Qxfx$$
+    Checamos los elementos del universo:
+    \begin{itemize}
+    \item Para $x= a$
+      \begin{align*}
+        Qafa &=_\mathcal{I} Qaa \in Q^\mathcal{I}
+      \end{align*}
+    \item Para $x= b$
+      \begin{align*}
+        Qbfb &=_\mathcal{I} Qbc \in Q^\mathcal{I}
+      \end{align*}
+    \item Para $x= c$
+      \begin{align*}
+        Qcfc &=_\mathcal{I} Qca \in Q^\mathcal{I}
+      \end{align*}
+    \end{itemize}
+    Entonces en efecto
+    $$ \mathcal{M} \models \forall x Qxfx$$
+
+    Ahora falta ver que:
+    $$ \mathcal{M} \models \exists y (P aafy \lor P bafy)$$
+    Para $y=a$ tenemos:
+    $$ Paafa = Paaa \in P^\mathcal{I}$$
+
+    Concluimos que $\mathcal{M} \models_\sigma \forall x(Qxfx \land \exists x
+    (P ayfx \lor P byfx))$ donde $\sigma(y) = a$
+
+    \hfill\break
+    %% b
+  \item Define un estado $\sigma$ tal que
+    $\mathcal{M} \not\models_\sigma \exists x(\neg Qxx) \land P yfyffy
+    \rightarrow Qxy \lor Qyfx$
+
+    Primero hacemos una observación:
+    $$\exists x(\neg Qxx) \land P yfyffy \rightarrow Qxy \lor Qyfx
+    \equiv \exists x(\neg Qxx) \land P yfyffy \rightarrow Qzy \lor Qyfz$$
+    
+    Entonces hay que ver un estado $\sigma$ tal que
+    $\mathcal{M} \not\models_\sigma \exists x(\neg Qxx) \land P yfyffy
+    \rightarrow Qzy \lor Qyfz$
+
+    $\sigma$ es tal que:
+    \begin{align*}
+      \sigma(y) &= a\\
+      \sigma(z) &= b
+    \end{align*}
+
+    Así el antecedente de la implicación es verdadero pero
+    el lado derecho es falso. Veamos por que:
+    $$\mathcal{M}\models_\sigma \exists x(\neg Qxx)$$
+    Pues para $x = b$ tenemos $Qbb\notin Q^\mathcal{I}$.
+    $$\mathcal{M}\models_\sigma Pyfyffy$$
+    \begin{align*}
+      Pyfyffy &=_\sigma Pafaffa = Paafa = Paaa \in P^\mathcal{I}.
+    \end{align*}
+
+    Y ahora veremos que
+    $$\mathcal{M} \not\models_\sigma  Qzy \lor Qyfz$$
+
+    \begin{align*}
+      Qzy &=_\sigma Q ba \notin Q^\mathcal{I}\\
+      Qyfz &=_\sigma Q afb = Qac \notin Q^\mathcal{I}\\
+    \end{align*}
+
+    Entonces para la $\sigma$ dada     $\mathcal{M} \not\models_\sigma \exists x(\neg Qxx) \land P yfyffy
+    \rightarrow Qxy \lor Qyfx$
+    %% c
+  \item  Decide si $\mathcal{M} \models \exists x(P xxx \land Qxfx \land\neg Qxx)$
+    
+    Es cierto pues para $x=b$ tenemos:
+    \begin{align*}
+      P bbb &\in P^\mathcal{I}\\
+      Qbfb = Qbc &\in Q^\mathcal{I} \\
+      Qbb &\not\in Q^\mathcal{I}
+    \end{align*}
+  \end{enumerate}
   %% 09
 \item[9.] Considera el siguiente programa lógico.
 
@@ -130,6 +316,9 @@ suplan la del semanal.
     lista recibida. 
   \item Construye el árbol de búsqueda para la meta {\tt ?- p(X,[1,2,3]}.
 
+    \hfill\break
+    
+    No se poner las sustituciones en las aristas, imagen en la siguiente pagina
     \begin{center}
       \includegraphics[scale=0.4]{9}
     \end{center}
